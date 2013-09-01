@@ -31,7 +31,7 @@ def getPassword():
 
 def checkFolder(folder):
 	if os.path.exists(folder) == False:
-		os.mkdir(folder)
+		os.makedirs(folder)
 
 
 def download_2(base_path,year,month,categories_idx,filename,foldername):
@@ -51,13 +51,13 @@ if __name__ == '__main__':
 	#設定下載起頭年份
 	start_year = 95	
 	end_year = 102
-	base_path = "/home/aha/Data/TWFS/src/extract/" 
+	base_path = "/home/aha/Data/TWFS/" 
 	#設定其它參數
 	CIS = ["4_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1"]
 	FOLDERS = ["DFEI","MD_BAL","MD_AUM","FD_BAL","NC","Y_BAL","CD","AREA_DP","CC","ATM","OC","PFEI"]
 	#確保資料夾存在
 	for fd in FOLDERS:
-		checkFolder("/Users/aha/Dropbox/Project/Financial/Plan/rawdata/"+fd+"/")
+		checkFolder(base_path+"rawdata/"+fd+"/")
 
 	FILES = ["4140","22010","22020","22030","22040","22050","22060","213010","29010","28010","21020","21010"]
 	
