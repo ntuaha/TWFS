@@ -34,12 +34,12 @@ def checkFolder(folder):
 		os.mkdir(folder)
 
 
-def download_2(year,month,categories_idx,filename,foldername):
+def download_2(base_path,year,month,categories_idx,filename,foldername):
 	#pwd = getPassword()
 	#server_path = "https://survey.banking.gov.tw/statis/stmain.jsp?sys=120&ym=%d%02d&ymt=%d%02d&kind=0&type=2&funid=2050&cycle=0&outmode=3&rdm=%8s" %(year,month,year,month,pwd)                    
 	server_path = "https://survey.banking.gov.tw/statis/%s_%d%02d%d%02d/%s.xls" % (categories_idx,year,month,year,month,filename)
-	client_path = "/Users/aha/Dropbox/Project/Financial/Plan/rawdata/%s/%d%02d.xls" % (foldername,year,month)
-	cookie_path = '/Users/aha/Dropbox/Project/Financial/Plan/cookie0001.txt'
+	client_path = "%srawdata/%s/%d%02d.xls" % (base_path,foldername,year,month)
+	cookie_path = "%scookie0001.txt" % (base_path)
 	agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31'
 	print server_path
 	print client_path
@@ -51,6 +51,7 @@ if __name__ == '__main__':
 	#設定下載起頭年份
 	start_year = 95	
 	end_year = 102
+	base_path = /home/aha/Data/TWFS/src/extract/ 
 	#設定其它參數
 	CIS = ["4_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1"]
 	FOLDERS = ["DFEI","MD_BAL","MD_AUM","FD_BAL","NC","Y_BAL","CD","AREA_DP","CC","ATM","OC","PFEI"]
@@ -65,5 +66,5 @@ if __name__ == '__main__':
 		for month in range(1,12):
 #			download(year,month)
 			for i in range(0,len(FOLDERS)):
-				download_2(year,month,CIS[i],FILES[i],FOLDERS[i])
+				download_2(base_path,year,month,CIS[i],FILES[i],FOLDERS[i])
 
