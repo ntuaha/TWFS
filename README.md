@@ -1,6 +1,6 @@
 台灣金融統計
 ===
-Taiwan Financial Statics
+Taiwan Financial Statistics
 
 
 ## 資料來源
