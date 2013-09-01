@@ -51,7 +51,7 @@ if __name__ == '__main__':
 	#設定下載起頭年份
 	start_year = 95	
 	end_year = 102
-	base_path = /home/aha/Data/TWFS/src/extract/ 
+	base_path = "/home/aha/Data/TWFS/src/extract/" 
 	#設定其它參數
 	CIS = ["4_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1"]
 	FOLDERS = ["DFEI","MD_BAL","MD_AUM","FD_BAL","NC","Y_BAL","CD","AREA_DP","CC","ATM","OC","PFEI"]
