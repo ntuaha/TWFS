@@ -147,7 +147,7 @@ def runAll():
 	checkFolder(to_path)
 	yy = 95
 	mm = 1
-	for yy in range(95,98):
+	for yy in range(95,97):
 		for mm in range(1,13):
 			parse_1(from_path,to_path,'%d%02d'%(yy,mm))
 	for mm in range(1,9):
