@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 
-#PESI
+#PFEI
 import xlrd
 import re
 
@@ -142,8 +142,8 @@ def checkFolder(folder):
 
 
 def runAll():
-	from_path= '/Users/aha/Dropbox/Project/Financial/Plan/rawdata/PESI/'
-	to_path = '/Users/aha/Dropbox/Project/Financial/Plan/data/PESI/'
+	from_path= '/home/aha/Data/TWFS/rawdata/PFEI/'
+	to_path = '/home/aha/Data/TWFS/data/PFEI/'
 	checkFolder(to_path)
 	yy = 95
 	mm = 1
@@ -160,8 +160,8 @@ def runAll():
 
 
 if __name__ == '__main__':
-#	from_path= '/Users/aha/Dropbox/Project/Financial/Plan/rawdata/PESI/'
-#	to_path = '/Users/aha/Dropbox/Project/Financial/Plan/data/PESI/'
+#	from_path= '/Users/aha/Dropbox/Project/Financial/Plan/rawdata/PFEI/'
+#	to_path = '/Users/aha/Dropbox/Project/Financial/Plan/data/PFEI/'
 #	parse_1(from_path,to_path,'9501')
 #	parse_2(from_path,to_path,'10206')
 	runAll()
