@@ -55,7 +55,7 @@ def downloadAll():
 
 	#開始下載
 	for year in range(start_year,end_year+1):
-		for month in range(1,12):
+		for month in range(1,13):
 			for i in range(0,len(FOLDERS)):
 				download(base_path,year,month,CIS[i],FILES[i],FOLDERS[i])
 
