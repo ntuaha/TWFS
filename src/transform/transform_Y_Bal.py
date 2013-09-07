@@ -214,7 +214,7 @@ def parserAll():
 		for mm in range(1,13):
 			date = '%d%02d'%(yy,mm)
 			parse(from_path,to_path,date)
-	parse(from_path,to_path,'10111')
+	parse(from_path,to_path,'10001')
 	for yy in range(100,101):
 		for mm in range(2,13):
 			date = '%d%02d'%(yy,mm)
