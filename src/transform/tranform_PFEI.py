@@ -31,27 +31,27 @@ def parse_1(source_path,destination_path,date):
 	header=['年月','項目','數值']
 	country_data =[]
 
-	row1 = {0:date,1:"MIB",2:float(sh.cell_value(rowx=7,colx = 1))}
+	row1 = {0:date,1:"MIB",2:int(float(sh.cell_value(rowx=7,colx = 1))*1e6)}
 	country_data.append(row1)
-	row1 = {0:date,1:"金融機構存款餘額",2:float(sh.cell_value(rowx=8,colx = 1))}	
+	row1 = {0:date,1:"金融機構存款餘額",2:int(float(sh.cell_value(rowx=8,colx = 1))*1e6)}	
 	country_data.append(row1)
-	row1 = {0:date,1:"金融機構放款餘額",2:float(sh.cell_value(rowx=9,colx = 1))}		
+	row1 = {0:date,1:"金融機構放款餘額",2:int(float(sh.cell_value(rowx=9,colx = 1))*1e6)}		
 	country_data.append(row1)
-	row1 = {0:date,1:"貨幣機構存款餘額",2:float(sh.cell_value(rowx=10,colx = 1))}	
+	row1 = {0:date,1:"貨幣機構存款餘額",2:int(float(sh.cell_value(rowx=10,colx = 1))*1e6)}	
 	country_data.append(row1)
-	row1 = {0:date,1:"貨幣機構放款餘額",2:float(sh.cell_value(rowx=11,colx = 1))}
+	row1 = {0:date,1:"貨幣機構放款餘額",2:int(float(sh.cell_value(rowx=11,colx = 1))*1e6)}
 	country_data.append(row1)
-	row1 = {0:date,1:"一般銀行國內總分行對中小企業放款",2:float(sh.cell_value(rowx=12,colx = 1))}	
+	row1 = {0:date,1:"一般銀行國內總分行對中小企業放款",2:int(float(sh.cell_value(rowx=12,colx = 1))*1e6)}	
 	country_data.append(row1)
-	row1 = {0:date,1:"一般銀行國內總分行及信用合作社消費者貸款餘額",2:float(sh.cell_value(rowx=13,colx = 1))}		
+	row1 = {0:date,1:"一般銀行國內總分行及信用合作社消費者貸款餘額",2:int(float(sh.cell_value(rowx=13,colx = 1))*1e6)}		
 	country_data.append(row1)
-	row1 = {0:date,1:"一般銀行國內總分行消費者貸款餘額",2:float(sh.cell_value(rowx=14,colx = 1))}			
+	row1 = {0:date,1:"一般銀行國內總分行消費者貸款餘額",2:int(float(sh.cell_value(rowx=14,colx = 1))*1e6)}			
 	country_data.append(row1)
-	row1 = {0:date,1:"信託基金月底餘額",2:float(sh.cell_value(rowx=15,colx = 1))}				
+	row1 = {0:date,1:"信託基金月底餘額",2:int(float(sh.cell_value(rowx=15,colx = 1))*1e6)}				
 	country_data.append(row1)
-	row1 = {0:date,1:"票券公司票債券交易金額(本月)",2:float(sh.cell_value(rowx=16,colx = 1))}				
+	row1 = {0:date,1:"票券公司票債券交易金額(本月)",2:int(float(sh.cell_value(rowx=16,colx = 1))*1e6)}				
 	country_data.append(row1)
-	row1 = {0:date,1:"票券公司票債券交易金額(本年）",2:float(sh.cell_value(rowx=17,colx = 1))}	
+	row1 = {0:date,1:"票券公司票債券交易金額(本年）",2:int(float(sh.cell_value(rowx=17,colx = 1))*1e6)}	
 	country_data.append(row1)
 	row1 = {0:date,1:"股價指數",2:float(sh.cell_value(rowx=18,colx = 1))}	
 	country_data.append(row1)
@@ -67,9 +67,8 @@ def parse_1(source_path,destination_path,date):
 	country_data.append(row1)
 	row1 = {0:date,1:"經濟成長率",2:float(sh.cell_value(rowx=36,colx = 1))}		
 	country_data.append(row1)
-	row1 = {0:date,1:"外匯存底",2:float(sh.cell_value(rowx=25,colx = 1))}	
+	row1 = {0:date,1:"外匯存底",2:int(float(sh.cell_value(rowx=25,colx = 1))*1e6)}	
 	country_data.append(row1)
-	print country_data
 	output(destination_path,date,country_data)
 				
 def parse_2(source_path,destination_path,date):
@@ -80,25 +79,25 @@ def parse_2(source_path,destination_path,date):
 	header=['年月','項目','數值']
 	country_data =[]
 
-	row1 = {0:date,1:"MIB",2:float(sh.cell_value(rowx=7,colx = 1))}
+	row1 = {0:date,1:"MIB",2:int(float(sh.cell_value(rowx=7,colx = 1))*1e6)}
 	country_data.append(row1)
-	row2 = {0:date,1:"金融機構存款餘額",2:float(sh.cell_value(rowx=8,colx = 1))}	
+	row2 = {0:date,1:"金融機構存款餘額",2:int(float(sh.cell_value(rowx=8,colx = 1))*1e6)}	
 	country_data.append(row2)
-	row3 = {0:date,1:"金融機構放款餘額",2:float(sh.cell_value(rowx=9,colx = 1))}		
+	row3 = {0:date,1:"金融機構放款餘額",2:int(float(sh.cell_value(rowx=9,colx = 1))*1e6)}		
 	country_data.append(row3)
-	row4 = {0:date,1:"貨幣機構存款餘額",2:float(sh.cell_value(rowx=10,colx = 1))}	
+	row4 = {0:date,1:"貨幣機構存款餘額",2:int(float(sh.cell_value(rowx=10,colx = 1))*1e6)}	
 	country_data.append(row4)
-	row5 = {0:date,1:"貨幣機構放款餘額",2:float(sh.cell_value(rowx=11,colx = 1))}
+	row5 = {0:date,1:"貨幣機構放款餘額",2:int(float(sh.cell_value(rowx=11,colx = 1))*1e6)}
 	country_data.append(row5)
-	row6 = {0:date,1:"一般銀行國內總分行對中小企業放款",2:float(sh.cell_value(rowx=12,colx = 1))}	
+	row6 = {0:date,1:"一般銀行國內總分行對中小企業放款",2:int(float(sh.cell_value(rowx=12,colx = 1))*1e6)}	
 	country_data.append(row6)
-	row7 = {0:date,1:"一般銀行國內總分行及信用合作社消費者貸款餘額",2:float(sh.cell_value(rowx=13,colx = 1))}		
+	row7 = {0:date,1:"一般銀行國內總分行及信用合作社消費者貸款餘額",2:int(float(sh.cell_value(rowx=13,colx = 1))*1e6)}		
 	country_data.append(row7)
-	row8 = {0:date,1:"一般銀行國內總分行消費者貸款餘額",2:float(sh.cell_value(rowx=14,colx = 1))}			
+	row8 = {0:date,1:"一般銀行國內總分行消費者貸款餘額",2:int(float(sh.cell_value(rowx=14,colx = 1))*1e6)}			
 	country_data.append(row8)
-	row9 = {0:date,1:"票券公司票債券交易金額(本月)",2:float(sh.cell_value(rowx=15,colx = 1))}				
+	row9 = {0:date,1:"票券公司票債券交易金額(本月)",2:int(float(sh.cell_value(rowx=15,colx = 1))*1e6)}				
 	country_data.append(row9)
-	row10 = {0:date,1:"票券公司票債券交易金額(本年）",2:float(sh.cell_value(rowx=16,colx = 1))}	
+	row10 = {0:date,1:"票券公司票債券交易金額(本年）",2:int(float(sh.cell_value(rowx=16,colx = 1))*1e6)}	
 	country_data.append(row10)
 	row11 = {0:date,1:"股價指數",2:float(sh.cell_value(rowx=17,colx = 1))}	
 	country_data.append(row11)
@@ -114,9 +113,8 @@ def parse_2(source_path,destination_path,date):
 	country_data.append(row16)
 	row17 = {0:date,1:"經濟成長率",2:float(sh.cell_value(rowx=35,colx = 1))}		
 	country_data.append(row17)
-	row18 = {0:date,1:"外匯存底",2:float(sh.cell_value(rowx=24,colx = 1))}	
+	row18 = {0:date,1:"外匯存底",2:int(float(sh.cell_value(rowx=24,colx = 1))*1e6)}	
 	country_data.append(row18)
-	print country_data
 	output(destination_path,date,country_data)
 
 
@@ -128,7 +126,6 @@ def output(destination_path,date,data):
 	f.write(",".join(header)+"\n")
 	for d in data:
 		p=[d[i] for i in d]
-		print p
 		try:
 			f.write(",".join(map(str,p))+"\n")
 		except KeyError:
