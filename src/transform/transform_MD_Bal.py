@@ -15,21 +15,23 @@ def parse(source_path,destination_path,date):
 	sh = book.sheet_by_index(0)
 
 	bank_data = {}
-	header=['年月','銀行','項目','數值']
+	header=['年月','銀行','銀行類別','項目','數值']
 	rows = []
-	#header = ['年月','銀行','銀行英文','全行外匯活期存款','全行外匯定期存款','全行總額','國內外匯活期存款','國內外匯定期存款','國內總額','海外外匯活期存款','海外外匯定期存款','海外總額','金控註記']
 	total_data = [None]*10
 	jump_gap = 8
 	mode  = 0
+	modelist = ['國內銀行','國外銀行','信用合作社']
 	for i in range(sh.nrows):
 		row_name = unicode(sh.cell_value(rowx=i,colx = 0))
 		if unicode(sh.cell_value(rowx=i,colx = 1)) == u"":	
 			#空的但是資料開頭就跳到資料頭		
-			if  row_name == u"2-5　一般銀行外匯存款餘額":
+			if  row_name == u"2-1　一般銀行及信用合作社存款月底餘額":
 				mode =1
 			#	
-			if row_name == u"2-5　一般銀行外匯存款餘額（續三）":
+			if row_name == u"2-1　一般銀行及信用合作社存款月底餘額（續二）":
 				mode =2
+			if row_name == u"2-1　一般銀行及信用合作社存款月底餘額（續四）":
+				mode =3
 			#print "%d: Empty:%s" %(i,row_name)
 			continue
 		
@@ -37,64 +39,31 @@ def parse(source_path,destination_path,date):
 		if len(re.findall(r"[-+]?\d*\.\d+|\d+",unicode(sh.cell_value(rowx=i,colx = 1)))) == 0:
 			continue
 
-		#全行總和
-		if row_name== u"總　　　　　計　Total" and 1 == mode:
+	
+		if row_name== u"總　　　　　計　Total":
 			total_data[0] = date
 			total_data[1] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 			total_data[2] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 			total_data[3] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-			rows.append([total_data[0],"總計",'全行外匯活期存款',total_data[1]])
-			rows.append([total_data[0],"總計",'全行外匯定期存款',total_data[2]])
-			rows.append([total_data[0],"總計",'全行外匯總存款',total_data[3]])
-			continue
-		#全行銀行
-		if 1 == mode:
+			total_data[4] = int(float(sh.cell_value(rowx=i,colx = 4))*1e6)
+			rows.append([total_data[0],"總計",modelist[mode-1],'活期存款',total_data[1]])
+			rows.append([total_data[0],"總計",modelist[mode-1],'定期存款',total_data[2]])
+			rows.append([total_data[0],"總計",modelist[mode-1],'外匯存款',total_data[3]])
+			rows.append([total_data[0],"總計",modelist[mode-1],'公股存款與其他',total_data[4]])
+			
+		else:
 			bank_name = unicode(sh.cell_value(rowx=i,colx = 0))
 			bank_name = re.split('[\W+|(]', bank_name, flags=re.U)[0]
 			bank_data[bank_name] = {}
-			bank_data[bank_name]["ALL_MY"] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
-			bank_data[bank_name]["ALL_FY"] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
-			bank_data[bank_name]["ALL_Y"] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)			
-			rows.append([total_data[0],bank_name,"全行外匯活期存款",bank_data[bank_name]["ALL_MY"]])
-			rows.append([total_data[0],bank_name,"全行外匯定期存款",bank_data[bank_name]["ALL_FY"]])
-			rows.append([total_data[0],bank_name,'全行外匯總存款',bank_data[bank_name]["ALL_Y"]])
-
-
-		#國內總和
-		if sh.cell_value(rowx=i,colx = 0)== u"總　　　　　計　Total" and 2 == mode:
-			#國內
-			total_data[4] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
-			total_data[5] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
-			total_data[6] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-			rows.append([total_data[0],"總計",'國內外匯活期存款',total_data[4]])
-			rows.append([total_data[0],"總計",'國內外匯定期存款',total_data[5]])
-			rows.append([total_data[0],"總計",'國內外匯總存款',total_data[6]])
-			#Oversea 海外
-			total_data[7] = total_data[1] - total_data[4]
-			total_data[8] = total_data[2] - total_data[5]
-			total_data[9] = total_data[3] - total_data[6]
-			rows.append([total_data[0],"總計",'海外外匯活期存款',total_data[7]])
-			rows.append([total_data[0],"總計",'海外外匯定期存款',total_data[8]])
-			rows.append([total_data[0],"總計",'海外外匯總存款',total_data[9]])
-			continue
-		#國內銀行
-		if 2 == mode:
-			bank_name = unicode(sh.cell_value(rowx=i,colx = 0))
-			bank_name = re.split('[\W+|(]', bank_name, flags=re.U)[0]
-			bank_data[bank_name]["DB_MY"] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
-			bank_data[bank_name]["DB_FY"] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
-			bank_data[bank_name]["DB_Y"] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-			bank_data[bank_name]["OS_MY"] = bank_data[bank_name]["ALL_MY"] - bank_data[bank_name]["DB_MY"]
-			bank_data[bank_name]["OS_FY"] = bank_data[bank_name]["ALL_FY"] - bank_data[bank_name]["DB_FY"]
-			bank_data[bank_name]["OS_Y"] = bank_data[bank_name]["ALL_Y"] - bank_data[bank_name]["DB_Y"]
-			#print "%s %% %s" %(bank_data[bank_name],bank_name)
-			rows.append([total_data[0],bank_name,'國內外匯活期存款',bank_data[bank_name]["DB_MY"]])
-			rows.append([total_data[0],bank_name,'國內外匯定期存款',bank_data[bank_name]["DB_FY"]])
-			rows.append([total_data[0],bank_name,'國內外匯總存款',bank_data[bank_name]["DB_Y"]])
-			rows.append([total_data[0],bank_name,'海外外匯活期存款',bank_data[bank_name]["OS_MY"]])
-			rows.append([total_data[0],bank_name,'海外外匯定期存款',bank_data[bank_name]["OS_FY"]])
-			rows.append([total_data[0],bank_name,'海外外匯總存款',bank_data[bank_name]["OS_Y"]])
-
+			bank_data[bank_name]["ALL_MD"] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
+			bank_data[bank_name]["ALL_FD"] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
+			bank_data[bank_name]["ALL_FY"] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)			
+			bank_data[bank_name]["ALL_LD"] = int(float(sh.cell_value(rowx=i,colx = 4))*1e6)			
+			rows.append([total_data[0],bank_name,modelist[mode-1],"活期存款",bank_data[bank_name]["ALL_MD"]])
+			rows.append([total_data[0],bank_name,modelist[mode-1],"定期存款",bank_data[bank_name]["ALL_FD"]])
+			rows.append([total_data[0],bank_name,modelist[mode-1],'外匯總存款',bank_data[bank_name]["ALL_FY"]])
+			rows.append([total_data[0],bank_name,modelist[mode-1],'公股存款與其他',bank_data[bank_name]["ALL_LD"]])
+	#將資料寫入csv
 	output(destination_path,header,date,rows)
 
 
@@ -102,13 +71,13 @@ def parse2(source_path,destination_path,date):
 	book = xlrd.open_workbook(source_path+date+".xls")
 	print "The number of worksheets is",book.nsheets
 	print "Worksheet name(s):", book.sheet_names()
-	modes = [1,1,1,2,2,2]
+	modes = [1,1,1,2,2,2,3,4,4]
 	bank_data = {}
-	#header = ['年月','銀行','銀行英文','全行外匯活期存款','全行外匯定期存款','全行總額','國內外匯活期存款','國內外匯定期存款','國內總額','海外外匯活期存款','海外外匯定期存款','海外總額','金控註記']
 	total_data = [None]*10
 	header=['年月','銀行','項目','數值']
 	rows = []
 	total_data[0] = date
+	modelist = ['國內銀行','外國銀行在臺分行（含OBU）','大陸地區銀行在臺分行','信用合作社']
 	for sheet_num in range(book.nsheets):
 		sh = book.sheet_by_index(sheet_num)
 		mode  = modes[sheet_num]
@@ -121,63 +90,30 @@ def parse2(source_path,destination_path,date):
 			if len(re.findall(r"[-+]?\d*\.\d+|\d+",unicode(sh.cell_value(rowx=i,colx = 1)))) == 0:
 				continue
 
-
-			#全行總和
-			if row_name== u"總　　　　　計" and 1 == mode:
+			if row_name== u"總　　　　　計":
 				total_data[0] = date
 				total_data[1] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 				total_data[2] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 				total_data[3] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-				rows.append([total_data[0],"全行總計",'全行外匯活期存款',total_data[1]])
-				rows.append([total_data[0],"全行總計",'全行外匯定期存款',total_data[2]])
-				rows.append([total_data[0],"全行總計",'全行外匯總存款',total_data[3]])
-				continue
-			#全行銀行
-			if 1 == mode:
+				total_data[4] = int(float(sh.cell_value(rowx=i,colx = 4))*1e6)
+				rows.append([total_data[0],"總計",modelist[mode-1],'活期存款',total_data[1]])
+				rows.append([total_data[0],"總計",modelist[mode-1],'定期存款',total_data[2]])
+				rows.append([total_data[0],"總計",modelist[mode-1],'外匯存款',total_data[3]])
+				rows.append([total_data[0],"總計",modelist[mode-1],'公股存款與其他',total_data[4]])
+				
+			else:
 				bank_name = unicode(sh.cell_value(rowx=i,colx = 0))
 				bank_name = re.split('[\W+|(]', bank_name, flags=re.U)[0]
 				bank_data[bank_name] = {}
-				bank_data[bank_name]["ALL_MY"] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
-				bank_data[bank_name]["ALL_FY"] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
-				bank_data[bank_name]["ALL_Y"] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)			
-				rows.append([total_data[0],bank_name,"全行外匯活期存款",bank_data[bank_name]["ALL_MY"]])
-				rows.append([total_data[0],bank_name,"全行外匯定期存款",bank_data[bank_name]["ALL_FY"]])
-				rows.append([total_data[0],bank_name,'全行外匯總存款',bank_data[bank_name]["ALL_Y"]])
-
-
-			#國內總和
-			if sh.cell_value(rowx=i,colx = 0)== u"總　　　　　計" and 2 == mode:
-				#國內
-				total_data[4] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
-				total_data[5] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
-				total_data[6] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-				rows.append([total_data[0],"國內總計",'國內外匯活期存款',total_data[4]])
-				rows.append([total_data[0],"國內總計",'國內外匯定期存款',total_data[5]])
-				rows.append([total_data[0],"國內總計",'國內外匯總存款',total_data[6]])
-				#Oversea 海外
-				total_data[7] = total_data[1] - total_data[4]
-				total_data[8] = total_data[2] - total_data[5]
-				total_data[9] = total_data[3] - total_data[6]
-				rows.append([total_data[0],"海外總計 ",'海外外匯活期存款',total_data[7]])
-				rows.append([total_data[0],"海外總計 ",'海外外匯定期存款',total_data[8]])
-				rows.append([total_data[0],"海外總計 ",'海外外匯總存款',total_data[9]])
-				continue
-			#國內銀行
-			if 2 == mode:
-				bank_name = unicode(sh.cell_value(rowx=i,colx = 0))
-				bank_name = re.split('[\W+|(]', bank_name, flags=re.U)[0]
-				bank_data[bank_name]["DB_MY"] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
-				bank_data[bank_name]["DB_FY"] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
-				bank_data[bank_name]["DB_Y"] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-				bank_data[bank_name]["OS_MY"] = bank_data[bank_name]["ALL_MY"] - bank_data[bank_name]["DB_MY"]
-				bank_data[bank_name]["OS_FY"] = bank_data[bank_name]["ALL_FY"] - bank_data[bank_name]["DB_FY"]
-				bank_data[bank_name]["OS_Y"] = bank_data[bank_name]["ALL_Y"] - bank_data[bank_name]["DB_Y"]
-				rows.append([total_data[0],bank_name,'國內外匯活期存款',bank_data[bank_name]["DB_MY"]])
-				rows.append([total_data[0],bank_name,'國內外匯定期存款',bank_data[bank_name]["DB_FY"]])
-				rows.append([total_data[0],bank_name,'國內外匯總存款',bank_data[bank_name]["DB_Y"]])
-				rows.append([total_data[0],bank_name,'海外外匯活期存款',bank_data[bank_name]["OS_MY"]])
-				rows.append([total_data[0],bank_name,'海外外匯定期存款',bank_data[bank_name]["OS_FY"]])
-				rows.append([total_data[0],bank_name,'海外外匯總存款',bank_data[bank_name]["OS_Y"]])
+				bank_data[bank_name]["ALL_MD"] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
+				bank_data[bank_name]["ALL_FD"] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
+				bank_data[bank_name]["ALL_FY"] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)			
+				bank_data[bank_name]["ALL_LD"] = int(float(sh.cell_value(rowx=i,colx = 4))*1e6)			
+				rows.append([total_data[0],bank_name,modelist[mode-1],"活期存款",bank_data[bank_name]["ALL_MD"]])
+				rows.append([total_data[0],bank_name,modelist[mode-1],"定期存款",bank_data[bank_name]["ALL_FD"]])
+				rows.append([total_data[0],bank_name,modelist[mode-1],'外匯總存款',bank_data[bank_name]["ALL_FY"]])
+				rows.append([total_data[0],bank_name,modelist[mode-1],'公股存款與其他',bank_data[bank_name]["ALL_LD"]])
+	#將資料寫入csv
 	output(destination_path,header,date,rows)
 				
 
@@ -200,12 +136,26 @@ def checkFolder(folder):
 
 
 
+def parser(date):
+	folder = 'MD_Bal'
+	from_path= '/Users/aha/Dropbox/Project/Financial/Plan/rawdata/%s/' % (folder)
+	to_path = '/Users/aha/Dropbox/Project/Financial/Plan/data/%s/' % (folder)
+	#from_path= '/home/aha/Data/TWFS/rawdata/%s/' % (folder)
+	#to_path = '/home/aha/Data/TWFS/data/%s/' % (folder)
+	checkFolder(to_path)
+ 	parse(from_path,to_path,date)
 
- 		
+def parser2(date):
+	folder = 'MD_Bal'
+	from_path= '/Users/aha/Dropbox/Project/Financial/Plan/rawdata/%s/' % (folder)
+	to_path = '/Users/aha/Dropbox/Project/Financial/Plan/data/%s/' % (folder)
+	#from_path= '/home/aha/Data/TWFS/rawdata/%s/' % (folder)
+	#to_path = '/home/aha/Data/TWFS/data/%s/' % (folder)
+	checkFolder(to_path)
+ 	parse2(from_path,to_path,date)
+
 def parserAll():
-	folder = 'Y_BAL'
-	#from_path= '/Users/aha/Dropbox/Project/Financial/Plan/rawdata/%s/' % (folder)
-	#to_path = '/Users/aha/Dropbox/Project/Financial/Plan/data/%s/' % (folder)
+	folder = 'MD_BAL'
 	from_path= '/home/aha/Data/TWFS/rawdata/%s/' % (folder)
 	to_path = '/home/aha/Data/TWFS/data/%s/' % (folder)
 	checkFolder(to_path)
@@ -227,6 +177,8 @@ def parserAll():
 
 if __name__ == '__main__':
 	parserAll()
+	#parser('9908')
+	#parser2('10205')
 	
 
 
