@@ -128,9 +128,9 @@ def parse2(source_path,destination_path,date):
 				total_data[1] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 				total_data[2] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 				total_data[3] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-				rows.append([total_data[0],"總計",'全行外匯活期存款',total_data[1]])
-				rows.append([total_data[0],"總計",'全行外匯定期存款',total_data[2]])
-				rows.append([total_data[0],"總計",'全行外匯總存款',total_data[3]])
+				rows.append([total_data[0],"全行總計",'全行外匯活期存款',total_data[1]])
+				rows.append([total_data[0],"全行總計",'全行外匯定期存款',total_data[2]])
+				rows.append([total_data[0],"全行總計",'全行外匯總存款',total_data[3]])
 				continue
 			#全行銀行
 			if 1 == mode:
@@ -151,16 +151,16 @@ def parse2(source_path,destination_path,date):
 				total_data[4] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 				total_data[5] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 				total_data[6] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-				rows.append([total_data[0],"總計",'國內外匯活期存款',total_data[4]])
-				rows.append([total_data[0],"總計",'國內外匯定期存款',total_data[5]])
-				rows.append([total_data[0],"總計",'國內外匯總存款',total_data[6]])
+				rows.append([total_data[0],"國內總計",'國內外匯活期存款',total_data[4]])
+				rows.append([total_data[0],"國內總計",'國內外匯定期存款',total_data[5]])
+				rows.append([total_data[0],"國內總計",'國內外匯總存款',total_data[6]])
 				#Oversea 海外
 				total_data[7] = total_data[1] - total_data[4]
 				total_data[8] = total_data[2] - total_data[5]
 				total_data[9] = total_data[3] - total_data[6]
-				rows.append([total_data[0],"總計 ",'海外外匯活期存款',total_data[7]])
-				rows.append([total_data[0],"總計 ",'海外外匯定期存款',total_data[8]])
-				rows.append([total_data[0],"總計 ",'海外外匯總存款',total_data[9]])
+				rows.append([total_data[0],"海外總計 ",'海外外匯活期存款',total_data[7]])
+				rows.append([total_data[0],"海外總計 ",'海外外匯定期存款',total_data[8]])
+				rows.append([total_data[0],"海外總計 ",'海外外匯總存款',total_data[9]])
 				continue
 			#國內銀行
 			if 2 == mode:
