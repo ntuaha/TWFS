@@ -30,7 +30,7 @@ def parse(source_path,destination_path,date):
 			#	
 			if row_name == u"2-5　一般銀行外匯存款餘額（續三）":
 				mode =2
-			print "%d: Empty:%s" %(i,row_name)
+			#print "%d: Empty:%s" %(i,row_name)
 			continue
 		
 		#第二藍衛如果是文字就跳過
@@ -125,7 +125,6 @@ def parse2(source_path,destination_path,date):
 			#全行總和
 			if row_name== u"總　　　　　計" and 1 == mode:
 				total_data[0] = date
-				print total_data[0]
 				total_data[1] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 				total_data[2] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 				total_data[3] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
@@ -173,14 +172,12 @@ def parse2(source_path,destination_path,date):
 				bank_data[bank_name]["OS_MY"] = bank_data[bank_name]["ALL_MY"] - bank_data[bank_name]["DB_MY"]
 				bank_data[bank_name]["OS_FY"] = bank_data[bank_name]["ALL_FY"] - bank_data[bank_name]["DB_FY"]
 				bank_data[bank_name]["OS_Y"] = bank_data[bank_name]["ALL_Y"] - bank_data[bank_name]["DB_Y"]
-				#print "%s %% %s" %(bank_data[bank_name],bank_name)
 				rows.append([total_data[0],bank_name,'國內外匯活期存款',bank_data[bank_name]["DB_MY"]])
 				rows.append([total_data[0],bank_name,'國內外匯定期存款',bank_data[bank_name]["DB_FY"]])
 				rows.append([total_data[0],bank_name,'國內外匯總存款',bank_data[bank_name]["DB_Y"]])
 				rows.append([total_data[0],bank_name,'海外外匯活期存款',bank_data[bank_name]["OS_MY"]])
 				rows.append([total_data[0],bank_name,'海外外匯定期存款',bank_data[bank_name]["OS_FY"]])
 				rows.append([total_data[0],bank_name,'海外外匯總存款',bank_data[bank_name]["OS_Y"]])
-	print rows
 	output(destination_path,header,date,rows)
 				
 
@@ -195,6 +192,7 @@ def output(destination_path,header,date,data):
 		except KeyError:
 			f.write(",".join(map(str,d))+"\n")
 	f.close()
+	print date
 	
 def checkFolder(folder):
 	if os.path.exists(folder) == False:
@@ -205,7 +203,7 @@ def checkFolder(folder):
 
  		
 def parserAll():
-	folder = 'Y_Bal'
+	folder = 'Y_BAL'
 	#from_path= '/Users/aha/Dropbox/Project/Financial/Plan/rawdata/%s/' % (folder)
 	#to_path = '/Users/aha/Dropbox/Project/Financial/Plan/data/%s/' % (folder)
 	from_path= '/home/aha/Data/TWFS/rawdata/%s/' % (folder)
