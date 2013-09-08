@@ -34,15 +34,15 @@ class TRANSFORM_CD:
 			sh = book.sheet_by_index(sheet_num)
 			for i in range(sh.nrows):
 				row_name = unicode(sh.cell_value(rowx=i,colx = 0))					
-				mode =0
-				if u"本國銀行（國內總分行） Domestic Banks (Local Branches)" in row_name:
+				#mode =0
+				if u"本國銀行（國內總分行）" in row_name:
 					mode = 0
 					continue												
-				if u"外國銀行在臺分行 Local Branches of Foreign Banks" in row_name:
+				if u"外國銀行在臺分行" in row_name:
 					mode = 1
 					continue
-				if u"全國農業金庫、信合社、農漁會及中華郵政公司" in row_name:
-					mode = 2
+				if u"全國農業金庫" in row_name:
+					mode = 3
 					continue									
 
 				#空的但是資料開頭就跳到資料頭
@@ -113,11 +113,11 @@ class TRANSFORM_CD:
 
 
 if __name__ == '__main__':
-	parser = TRANSFORM_CD('/Users/aha/Dropbox/Project/Financial/Plan/rawdata/','/Users/aha/Dropbox/Project/Financial/Plan/data/')
-	parser.runParse('10001')
-	parser.runParse('10002')
-	#parser = TRANSFORM_FD_BAL('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
-	#parser.parseAll()
+	#parser = TRANSFORM_CD('/Users/aha/Dropbox/Project/Financial/Plan/rawdata/','/Users/aha/Dropbox/Project/Financial/Plan/data/')
+	#parser.runParse('10001')
+	#parser.runParse('10002')
+	parser = TRANSFORM_CD('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
+	parser.parseAll()
 
 	
 
