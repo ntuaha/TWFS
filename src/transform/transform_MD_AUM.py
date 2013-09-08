@@ -94,7 +94,7 @@ class TRANSFORM_MD_AUM:
 		self.date = date
  		self.parse()
 
-	def parseAll():
+	def parseAll(self):
 		for yy in range(95,103):
 			for mm in range(1,13):
 				self.runParse('%d%02d'%(yy,mm))
