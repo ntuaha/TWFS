@@ -30,6 +30,7 @@ class TRANSFORM_CD:
 		#print "The number of worksheets is",book.nsheets
 		#print "Worksheet name(s):", book.sheet_names()
 		bank_data = {}
+		mode = 0
 		for sheet_num in range(book.nsheets):
 			sh = book.sheet_by_index(sheet_num)
 			for i in range(sh.nrows):
