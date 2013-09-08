@@ -44,7 +44,7 @@ class TRANSFORM_FD_BAL:
 
 				self.total_data[0] = self.date
 				self.total_data[1] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
-				self.total_data[2] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
+				self.total_data[2] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 			
 				#if u"總　　　　　計　Total" in row_name:
 				#	for i in range(len(self.columns)):
