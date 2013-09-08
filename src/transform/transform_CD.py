@@ -1,0 +1,124 @@
+# -*- coding: utf-8 -*- 
+
+import xlrd
+import re
+
+#處理掉unicode 和 str 在ascii上的問題
+import sys 
+import os
+reload(sys) 
+sys.setdefaultencoding('utf8') 
+
+class TRANSFORM_CD:
+	source_type = 'CD' #處理定儲餘額
+	header=['年月','銀行','銀行類別','項目','數值']
+	rows = []
+	total_data = [None]*15
+	bank_data = {}
+	modelist = ['本國銀行','外國銀行在台分行','大陸地區銀行在臺分行','信用合作社']
+	columns = ["公司支存戶數","公司支存餘額","個人支存戶數","個人支存餘額","其他支存戶數","其他支存餘額"]	
+	def __init__(self,source_path,destination_path):
+		self.source_path = "%s%s/" % (source_path,self.source_type)
+		self.destination_path = "%s%s/" % (destination_path,self.source_type)
+		self.date = '9501'
+	def clean(self):
+		del self.rows[:]		
+
+	def parse(self):
+		self.clean()
+		book = xlrd.open_workbook(self.source_path+self.date+".xls")
+		#print "The number of worksheets is",book.nsheets
+		#print "Worksheet name(s):", book.sheet_names()
+		bank_data = {}
+		for sheet_num in range(book.nsheets):
+			sh = book.sheet_by_index(sheet_num)
+			for i in range(sh.nrows):
+				row_name = unicode(sh.cell_value(rowx=i,colx = 0))					
+				mode =0
+				if u"本國銀行（國內總分行） Domestic Banks (Local Branches)" in row_name:
+					mode = 0
+					continue												
+				if u"外國銀行在臺分行 Local Branches of Foreign Banks" in row_name:
+					mode = 1
+					continue
+				if u"全國農業金庫、信合社、農漁會及中華郵政公司" in row_name:
+					mode = 2
+					continue									
+
+				#空的但是資料開頭就跳到資料頭
+				if unicode(sh.cell_value(rowx=i,colx = 1)) == u"":	
+					continue
+				#第二藍衛如果是文字就跳過
+				if len(re.findall(r"[-+]?\d*\.\d+|\d+",unicode(sh.cell_value(rowx=i,colx = 1)))) != 1: #我只要一組數字的欄位
+					continue
+
+
+				self.total_data[0] = self.date
+				self.total_data[1] = int(float(sh.cell_value(rowx=i,colx = 1)))
+				self.total_data[2] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
+				self.total_data[3] = int(float(sh.cell_value(rowx=i,colx = 3)))
+				self.total_data[4] = int(float(sh.cell_value(rowx=i,colx = 4))*1e6)
+				self.total_data[5] = int(float(sh.cell_value(rowx=i,colx = 5)))
+				self.total_data[6] = int(float(sh.cell_value(rowx=i,colx = 6))*1e6)
+			
+			
+				#if u"總　　　　　計　Total" in row_name:
+				#	for i in range(len(self.columns)):
+				#		self.rows.append([self.date,"總計","全體銀行機構",self.columns[i],self.total_data[i+1]])	
+				if u"總" in row_name and u"計" in row_name:
+					for i in range(len(self.columns)):
+						self.rows.append([self.date,"總計",self.modelist[mode],self.columns[i],self.total_data[i+1]])							
+				#elif u"外國銀行在臺分行" in row_name:					
+				#	for i in range(len(self.columns)):
+				#		self.rows.append([self.date,"小計",self.modelist[1],self.columns[i],self.total_data[i+1]])		
+				#elif u"信用合作社" in row_name:
+				#	for i in range(len(self.columns)):
+				#		self.rows.append([self.date,"小計",self.modelist[3],self.columns[i],self.total_data[i+1]])	
+				else: #其它一般資料				
+					bank_name = unicode(sh.cell_value(rowx=i,colx = 0))
+					bank_name = re.split('[\W+|(]', bank_name, flags=re.U)[0]
+					for i in range(len(self.columns)):
+						self.rows.append([self.date,bank_name,self.modelist[mode],self.columns[i],self.total_data[i+1]])
+		#將資料寫入csv
+		self.output()
+					
+
+
+	#輸出
+	def output(self):
+		f = open("%s%s.csv"%(self.destination_path,self.date),"w+")
+		f.write(",".join(self.header)+"\n")
+		for d in self.rows:
+			try:
+				f.write(",".join(map(str,d))+"\n")
+			except KeyError:
+				f.write(",".join(map(str,d))+"\n")
+		f.close()
+		print "%s is completed!" % (self.date)
+		
+	def checkFolder(self,folder):
+		if os.path.exists(folder) == False:
+			os.makedirs(folder)
+
+	def runParse(self,date):
+		self.checkFolder(self.destination_path)
+		self.date = date
+ 		self.parse()
+
+	def parseAll(self):
+		for yy in range(95,103):
+			for mm in range(1,13):
+				self.runParse('%d%02d'%(yy,mm))
+
+
+
+if __name__ == '__main__':
+	parser = TRANSFORM_CD('/Users/aha/Dropbox/Project/Financial/Plan/rawdata/','/Users/aha/Dropbox/Project/Financial/Plan/data/')
+	parser.runParse('10001')
+	parser.runParse('10002')
+	#parser = TRANSFORM_FD_BAL('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
+	#parser.parseAll()
+
+	
+
+
