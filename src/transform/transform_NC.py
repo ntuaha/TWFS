@@ -117,11 +117,11 @@ class TRANSFORM_NC:
 
 
 if __name__ == '__main__':
-	parser = TRANSFORM_NC('/Users/aha/Dropbox/Project/Financial/Plan/rawdata/','/Users/aha/Dropbox/Project/Financial/Plan/data/')
-	parser.runParse('10001')
-	parser.runParse('10002')
-	#parser = TRANSFORM_NC('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
-	#parser.parseAll()
+	#parser = TRANSFORM_NC('/Users/aha/Dropbox/Project/Financial/Plan/rawdata/','/Users/aha/Dropbox/Project/Financial/Plan/data/')
+	#parser.runParse('10001')
+	#parser.runParse('10002')
+	parser = TRANSFORM_NC('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
+	parser.parseAll()
 
 	
 
