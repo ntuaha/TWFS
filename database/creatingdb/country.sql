@@ -20,7 +20,6 @@ Rediscount_Rate real,
 B_Ins_Rate real,
 GDP real,
 Y_DP real,
-CONSTRAINT country_pkey PRIMARY KEY (id),
 CONSTRAINT data_ym_idx UNIQUE(Data_Ym)
 );
 
