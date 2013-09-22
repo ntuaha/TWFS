@@ -1,5 +1,7 @@
-create table `COUNTRY`(
-Data_Ym timestamp primary key,
+create table country(
+id serial primary key,
+ETL_Dt timestamp not null default now(),
+Data_Ym timestamp ,
 M1B real,
 F_Ins_Dp real,
 F_Ins_Ln real,
@@ -17,6 +19,8 @@ Exchange_Rate real,
 Rediscount_Rate real,
 B_Ins_Rate real,
 GDP real,
-Y_DP real
+Y_DP real,
+CONSTRAINT country_pkey PRIMARY KEY (id),
+CONSTRAINT data_ym_idx UNIQUE(Data_Ym)
 );
 
