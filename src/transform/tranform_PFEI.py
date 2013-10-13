@@ -112,7 +112,7 @@ def parse_2(source_path,destination_path,date):
 	country_data.append(row16)
 	row17 = {0:date,1:"經濟成長率",2:float(sh.cell_value(rowx=35,colx = 1)),3:"GDP"}		
 	country_data.append(row17)
-	row18 = {0:date,1:"外匯存底",2:int(float(sh.cell_value(rowx=24,colx = 1))*1e6),"Y_DP"}	
+	row18 = {0:date,1:"外匯存底",2:int(float(sh.cell_value(rowx=24,colx = 1))*1e6),3:"Y_DP"}	
 	country_data.append(row18)
 	output(destination_path,date,country_data)
 
@@ -120,7 +120,7 @@ def parse_2(source_path,destination_path,date):
 
 #輸出
 def output(destination_path,date,data):
-	header=['年月','項目','數值']
+	header=['年月','項目','數值',"欄位名"]
 	f = open("%s%s.csv"%(destination_path,date),"w+")
 	f.write(",".join(header)+"\n")
 	for d in data:
