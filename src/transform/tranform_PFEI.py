@@ -96,7 +96,7 @@ def parse_2(source_path,destination_path,date):
 	country_data.append(row1)
 	row9 = {0:date,1:"票券公司票債券交易金額(本月)",2:int(float(sh.cell_value(rowx=15,colx = 1))*1e6),3:"Bund_Txn_Amt"}				
 	country_data.append(row9)
-	row10 = {0:date,1:"票券公司票債券交易金額(本年）",2:int(float(sh.cell_value(rowx=16,colx = 1))*1e6),3:"Bund_Txn_Amt:_TY"}	
+	row10 = {0:date,1:"票券公司票債券交易金額(本年）",2:int(float(sh.cell_value(rowx=16,colx = 1))*1e6),3:"Bund_Txn_Amt_TY"}	
 	country_data.append(row10)
 	row11 = {0:date,1:"股價指數",2:float(sh.cell_value(rowx=17,colx = 1)),3:"Stock_Index"}	
 	country_data.append(row11)
