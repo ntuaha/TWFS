@@ -1,3 +1,4 @@
 *.xls
 cookie0001.txt
 #data/*
+*/db_info.py
