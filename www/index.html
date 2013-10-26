@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+	<script>
+	$(function(){
+		//$("div").html("123");
+		AJAX('2013-06-01');
+	});
+	function AJAX(d){
+	$.ajax({
+		dataType: "json",
+  		url: "./api/getData.php",
+  		data: {
+    			'date':d 
+ 		 },
+  		success: function( data ) {
+			//$("<tr><td>m1b</td><td>"+parseFloat(data['m1b'])/1e9+"</td></tr>").appendTo("#info>table");
+		        $("#col1").html(parseFloat(data["col1"]));
+			$("#col2").html(parseFloat(data["col2"])*100+"%");
+                        $("#col3").html(parseFloat(data["col3"])*100+"%");
+		}
+		});
+	}
+	</script>
+</head>
+<body>
+<div>
+TWT
+六月份消費者物價指數為<span id="col1"></span> (100年=100)，較上月<span id="col2"></span>，較上年同月<span id="col3"></span>，一到九月平均較上年同期<span id="col4"></span>
+</div>
+<div id="info">
+<table>
+
+</table>
+</div>
+</body>
+</html>
