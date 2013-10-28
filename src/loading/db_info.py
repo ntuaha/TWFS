@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*- 
 
 class DB_INFO:
-	database = ""
-	server_site = ''
-	port = 
-	username = ''
-	password = ''
+	database = "data"
+	server_site = 'localhost'
+	port = 5432
+	username = 'aha'
+	password = 'dataaha305'
 
 

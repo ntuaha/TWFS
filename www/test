@@ -1,0 +1,3 @@
+<?php
+echo date_format(date_create('2013-01-01'),'Y-m-d');
+?>

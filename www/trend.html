@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="./3party/bootstrap/js/bootstrap.min.js"></script>
+
+	<link href="./3party/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<script src="./getTrend.js"></script> 
+	<style>
+
+svg{
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+</style>
+</head>
+<body>
+	<!-- Navigation-->
+	<div class="navbar navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="#">台灣金融統計</a>
+			<ul class="nav">
+				<li ><a href="./index.html">Home</a></li>
+				<li ><a href="./report.html">Report</a></li>
+				<li class="active"><a href="#">Trend</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span10 offset1">
+			<div class="page-header">
+				<h1>各項指數趨勢圖<small> CPI,WPI...</small></h1>
+			</div>	
+		</div>
+	</div>
+	<!-- Content-->		
+	<div class="row-fluid">
+		<div class="span5 offset1">
+			<H2>CPI <small>2011=100</small></H2>
+			<div id="CPI" class="span12">
+
+			</div>
+		</div>
+		<div class="span5">
+			<H2>大盤指數</H2>
+			<div id="STOCK" class="span12">
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span5 offset1">
+			<H2>金融業存款</H2>
+			<div id="F_Ins_Dp" class="span12">
+
+			</div>
+		</div>
+		<div class="span5">
+			<H2>金融業放款</H2>
+			<div id="F_Ins_Ln" class="span12">
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span5 offset1">
+			<H2>金融業存放比</H2>
+			<div id="F_DP_LN_RATIO" class="span12">
+
+			</div>
+		</div>		
+	</div>
+
+	<hr>
+	<footer>有任何問題請與<a href="ntuaha@gmail.com">aha</a>聯絡</footer>
+</body>
+</html>

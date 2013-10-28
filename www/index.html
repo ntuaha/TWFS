@@ -2,38 +2,68 @@
 <html>
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+	<script src="./3party/bootstrap/js/bootstrap.min.js"></script>
+
+	<link href="./3party/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<script src="./ajax.js"></script> 
 	<script>
-	$(function(){
-		//$("div").html("123");
-		AJAX('2013-06-01');
-	});
-	function AJAX(d){
-	$.ajax({
-		dataType: "json",
-  		url: "./api/getData.php",
-  		data: {
-    			'date':d 
- 		 },
-  		success: function( data ) {
-			//$("<tr><td>m1b</td><td>"+parseFloat(data['m1b'])/1e9+"</td></tr>").appendTo("#info>table");
-		        $("#col1").html(parseFloat(data["col1"]));
-			$("#col2").html(parseFloat(data["col2"])*100+"%");
-                        $("#col3").html(parseFloat(data["col3"])*100+"%");
-		}
-		});
-	}
 	</script>
 </head>
 <body>
-<div>
-TWT
-六月份消費者物價指數為<span id="col1"></span> (100年=100)，較上月<span id="col2"></span>，較上年同月<span id="col3"></span>，一到九月平均較上年同期<span id="col4"></span>
-</div>
-<div id="info">
-<table>
 
-</table>
-</div>
+		<div class="navbar navbar-inverse">
+			<div class="navbar-inner">
+				<a class="brand" href="#">台灣金融統計</a>
+				<ul class="nav">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="./report.html">Report</a></li>
+					<li><a href="./trend.html">Trend</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="hero-unit">
+			<h1>台灣金融統計</h1>
+			<p>將台灣金融資料收集整理的地方</p>
+			<p>
+				<a class="btn btn-primary btn-large">
+					Learn more
+				</a>
+			</p>
+		</div>
+		<div class="row-fluid">
+			<div class="span3 offset1">
+				<H2>資料時間</H2>
+				<p>民國95年1月到民國102年9月</p>
+			</div>
+			<div class="span4">
+				<H2>資料庫格式</H2>
+				<a href="https://docs.google.com/spreadsheet/ccc?key=0AhEplIEPKoHfdHZxd1IzRVhUYnhPaVdxRnVoaExBTEE&usp=sharing" class="btn btn-primary ">
+					<i class="icon-book icon-white"></i> Metadata
+				</a>
+			</div>	
+
+			<div class="span3">
+				<H2>資料來源</H2>
+				<a href="https://survey.banking.gov.tw/statis/stmain.jsp?sys=100" class="btn btn-primary ">金管會 統計資料庫動態系統</a>
+			</div>
+		</div>
+		<div class="row-fluid">			
+				<div class="span3 offset1">
+					<H2>與我聯絡</H2>
+					<a href="ntuaha@gmail.com" class="btn btn-info">
+						<i class="icon-envelope icon-white"></i> Email
+					</a></br>
+				</div>
+				<div class="span4">
+				<H2>Github</H2>
+				<a href="https://github.com/ntuaha/TWFS" class="btn">
+					Github
+				</a>
+				</div>	
+		</div>
+		<hr>
+		<footer>有任何問題請與<a href="ntuaha@gmail.com">aha</a>聯絡</footer>
 </body>
 </html>
