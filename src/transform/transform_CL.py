@@ -8,15 +8,15 @@ import sys
 import os
 reload(sys) 
 sys.setdefaultencoding('utf8') 
-
 class TRANSFORM_CL:
 	source_type = 'CL' 
-	header=['年月','銀行','銀行類別','項目','數值']
+	header=['年月','銀行','銀行類別','項目','數值','英文項目']
 	rows = []
 	total_data = [None]*15
 	bank_data = {}
 	modelist = ['本國銀行','外國銀行在台分行','大陸地區銀行在臺分行','信用合作社']
 	columns = ["戶數","餘額"]	
+	columns_en = ["CL_Cnt","CL_Bal"]	
 	def __init__(self,source_path,destination_path):
 		self.source_path = "%s%s/" % (source_path,self.source_type)
 		self.destination_path = "%s%s/" % (destination_path,self.source_type)
@@ -68,7 +68,7 @@ class TRANSFORM_CL:
 				#		self.rows.append([self.date,"總計","全體銀行機構",self.columns[i],self.total_data[i+1]])	
 				if u"總" in row_name and u"計" in row_name:
 					for i in range(len(self.columns)):
-						self.rows.append([self.date,"總計",self.modelist[mode],self.columns[i],self.total_data[i+1]])							
+						self.rows.append([self.date,"總計",self.modelist[mode],self.columns[i],self.total_data[i+1],self.columns_en[i]])							
 				#elif u"本國銀行" in row_name:					
 				#	for i in range(len(self.columns)):
 				#		self.rows.append([self.date,"小計",self.modelist[0],self.columns[i],self.total_data[i+1]])							
@@ -86,7 +86,7 @@ class TRANSFORM_CL:
 					else:
 						bank_name = re.split('[\W+|(]', bank_name, flags=re.U)[0]
 					for i in range(len(self.columns)):
-						self.rows.append([self.date,bank_name,self.modelist[mode],self.columns[i],self.total_data[i+1]])
+						self.rows.append([self.date,bank_name,self.modelist[mode],self.columns[i],self.total_data[i+1],self.columns_en[i]])
 		#將資料寫入csv
 		self.output()
 					
