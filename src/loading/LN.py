@@ -5,22 +5,20 @@ import re
 #處理掉unicode 和 str 在ascii上的問題
 import sys 
 import os
-#import pg
-#import DB_INFO
 import psycopg2
 
 reload(sys) 
 sys.setdefaultencoding('utf8') 
 
 
-def makeSQL(date,data):
+def makeSQL(date,data,Dataset):
 	bank_nms = data.keys()
 	conn = psycopg2.connect(database="data", user="aha", password="dataaha305", host="127.0.0.1", port="5432")
 	cur = conn.cursor()	
 	bank_code = None
 	for bank_nm in bank_nms:		
 
-
+#根據銀行名稱，給定銀行代碼Bank_Code
 		if bank_nm=="總計":
 			bank_code = "0"			
 		else:		
@@ -48,8 +46,8 @@ def makeSQL(date,data):
 		values = ','.join(li)
 		conn.commit()
 	#	print "%s:%s:%s:%s"%(date,bank_code,bank_nm,data[bank_nm]["MARKET_RATE"])
-		cur.execute("DELETE FROM LSME WHERE Data_dt='%s' and bank_code='%s';"%(date,bank_code))
-		sql = "INSERT INTO LSME (Data_Dt,%s) VALUES (Timestamp '%s',%s);"%(cols,date,values)
+		cur.execute("DELETE FROM %s WHERE Data_dt='%s' and bank_code='%s';"%(Dataset,date,bank_code))
+		sql = "INSERT INTO %s (Data_Dt,%s) VALUES (Timestamp '%s',%s);"%(Dataset,cols,date,values)
 		#conn.query(sql)
 		cur.execute(sql)
 		conn.commit()
@@ -58,7 +56,7 @@ def makeSQL(date,data):
 
 	conn.close()
 
-def read(source_path):
+def read(source_path,dataset):
 	f = open(source_path,"r")
 	header = f.readline()
 	data = {}
@@ -72,6 +70,7 @@ def read(source_path):
 			year = int(row[0][:-2])+1911
 			month = int(row[0][-2:])
 			date = "%d-%d-01" % (year,month)
+			#1:中文名稱 5:英文名稱
 			if row[1]=="小計":
 				row[1] = "外國銀行在台分行"
 			if data.get(row[1],None) == None:
@@ -85,16 +84,16 @@ def read(source_path):
 	for i in data:
 		for j in data[i]:
 			data[i][j] = str(data[i][j])
-	makeSQL(date,data)
+	makeSQL(date,data,dataset)
 
 def runAll(path):
 #	for yy in range(95,96):
 #		for mm in range(1,2):
 	for yy in range(95,103):
 		for mm in range(1,13):
-			read("%s%d%02d.csv"%(path,yy,mm))
+			read("%s%d%02d.csv"%(path,yy,mm),"LN")
 
 if __name__ == '__main__':
-	path = '/home/aha/Data/TWFS/data/LSME/'
+	path = '/home/aha/Data/TWFS/data/LN/'
 	runAll(path)
 
