@@ -4,12 +4,12 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="./3party/bootstrap/js/bootstrap.min.js"></script>
-	<script src="http://d3js.org/d3.v3.js"></script>
 	<link href="./3party/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
-	<script src="./ajax.js"></script> 
-	<script>
-	</script>
+	<!-- for getLSME -->
+	<script src="./ln.js"></script> 
+
 </head>
 <body>
 	<!-- Navigation-->
@@ -18,9 +18,9 @@
 			<a class="brand" href="#">台灣金融統計</a>
 			<ul class="nav">
 				<li ><a href="./index.html">Home</a></li>
-				<li class="active"><a href="#">Report</a></li>
-				<li ><a href="./trend.html">Trend</a></li>
-				<li ><a href="./Ln.html">Ln</a></li>
+				<li ><a href="./report.html">Report</a></li>
+				<li ><a href="#">Trend</a></li>
+				<li class="active"><a href="./Ln.html">Ln</a></li>
 			</ul>
 		</div>
 	</div>
@@ -29,18 +29,22 @@
 	<div class="row-fluid">
 		<div class="span10 offset1">
 			<div class="page-header">
-				<h1>指數報告<small> CPI,WPI...</small></h1>
+				<h1>各家銀行放款數值 <small id="currentMonth"> May 2013</small></h1>
 			</div>	
 		</div>
 	</div>
 	<!-- Content-->		
 	<div class="row-fluid">
-		<div class="span6 offset1">
-			<H2>消費者物價指數 <small>(CPI= 100  民國100年,2012 )</small></H2>
-			<span class="year"></span>年<span class="month"></span>月份CPI為<strong id="col1"></strong> ，
-			較上月<strong id="col2"></strong>，
-			較上年同月<strong id="col3"></strong>,
-			1月到<span class="month"></span>月平均較上年同期<strong id="col4"></strong>
+		<div class="span10 offset1">
+			<div>
+				<button id="back" name="back" ><</button>
+				<button id="forward" name="forward" >></button>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span10 offset1">
+		    <div id="chart"></div>
 		</div>
 	</div>
 
