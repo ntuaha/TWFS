@@ -1,109 +1,100 @@
 # -*- coding: utf-8 -*- 
 import os
 import sys
+import psycopg2
+from csv import reader
 
+def type1(path,out_path,fn):
+	pass
 
-def convert(path,out_path,fn):
-	f = open(path+fn,'r')
-	fwname = "-".join(fn.split("-")[1:3])
-	fw = open(out_path+fwname+".csv","w+")
-	count = int(fn.split("-")[3].split('.')[0])	
-	header = ["TEST","BIN","CONTA","CONTC","POLAR","VF1","VF2","VF3","VF4","VFM1","VFM2","DVF","VF","VFD","VZ1","VZ2","IR","LOP1","LOP2","LOP3","WLP1","WLD1","WLC1","HW1","PURITY1","X1","Y1","Z1","CCT1","ST1","INT1","WLP2","WLD2","WLC2","HW2","PURITY2","X2","Y2","Z2","CCT2","ST2","INT2","WLP3","WLD3","WLC3","HW3","PURITY3","X3","Y3","Z3","CCT3","ST3","INT3","PosX","PosY"]
-	h_cnt = len(header)
-	mode = 1
-	row_cnt = 0		
-	for line in f.readlines():
-		row_cnt = row_cnt+1
-		row = line.split(',')
-		if mode == 1:
-			if row_cnt==2:
-				fw.write(fwname+",,\n")
-			elif row[0] !="TEST":
-				fw.write(line.strip()+"\n")
-			else:
-				mode =2
-				fw.write(",".join(header)+"\n")
-		elif mode==2:
+def run(ff):
+	f = open(ff,"r")
+	lines =reader(f)
 
-			cols = [""]*h_cnt
-			for i in xrange(0,len(row)):
-				cols[i] = row[i].strip()
-			cols[5] = row[3]
-			cols[3] = ""
-			cols[16] = row[8]
-			cols[8] = ""
-			cols[17] = row[28]
-			cols[28] = ""
-			cols[21] = row[20]
-			cols[20] = row[19]
-			cols[19] = ""
-			cols[54] = row[27]
-			cols[53] = row[26]
-			cols[27] = ""
-			cols[26] = ""
-			fw.write(",".join(cols)+"\n")
-	fw.close()
-	f.close()
-
-def extractBank(f):
-	fp = open(f,'r+')
-	bank_idx = -1
-	bank_category_idx = -1
-	lines = f.readlines()
-	row = 0
+	#lines = f.readlines()
+	conn = psycopg2.connect(database="data", user="aha", password="dataaha305", host="localhost", port="5432")
+	cur = conn.cursor()
+	count = 0
 	for line in lines:
-		row = row+1
-		cols = line.split(',')
-		if row ==1:
-			for i in xrange(len(cols)):
-				if cols[i] == "銀行":
-					bank_idx = i
-				if cols[i] == "銀行分類":
-					bank_category_idx = i
-		else:
-			if cols[bank_idx] == "總計":
-				continue
+		count = count +1
+		if count == 1:
+			continue
+		
+
+		cols = line
+		Bank_Code = -1
+		if cols[0] !="":
+			Bank_Code = int(cols[0])
+		Bank_Nm = cols[1]
+		Bank_Status_Cd = "A"
+		if "*" in Bank_Nm:
+			Bank_Statud_Cd = "B"
+		Bank_En_Name = cols[3].replace("'","''")
+
+		Start_Ym = cols[4]
+		Year = None
+		Month = None
+		Day = None
+		if "年" in cols[4]:
+			Year = cols[4].split("年")[0]
+			if "月" in cols[4]:
+				Month = cols[4].split("年")[1].split("月")[0]
+				if "日" in cols[4]:
+					Day = cols[4].split("年")[1].split("月")[1].split("日")[0]
+			Start_Ym = Year
+			if Month == None:
+				Start_Ym = Start_Ym+"-01-01"
 			else:
-				Bank_Nm = cols[bank_idx]
-				Bank_En_Nm	="NULL"
-				if cols[bank_category_idx] =="本國銀行":
-					Bank_Area = '0'
-					Bank_Categories_1 = '1'
-					Bank_Categories_2 = 'NULL'
-				elif cols[bank_category_idx] =="外國銀行在檯分行":
-					Bank_Area = '1'
-					Bank_Categories_1 = '1'
-					Bank_Categories_2 = '2'
-				Bank_Short_Nm = Bank_Nm[0:3]
-			conn = psycopg2.connect(database="data", user="aha", password="dataaha305", host="127.0.0.1", port="5432")
-			cur = conn.cursor()	
-			sql = "SELECT FROM bank_attr WHERE bank_short_nm = '%s' order by Data_Ym desc limit 1;"%(Bank_Short_Nm)
-			cur.execute(sql)
-			rows = cur.fetchall()
-			if len(rows)==0 :
-				sql = "INSERT INTO bank_attr (Data_Ym) VALUES ('')"
+				Start_Ym = "%s-%s"%(Start_Ym,Month)
+				if Day == None:
+					Start_Ym = Start_Ym+"-01"
+				else:
+					Start_Ym = Start_Ym+"-"+Day
+		else:
+			Start_Ym = None
+		Comment = cols[2]
+		SWIFT_BIC = cols[5]
+		if SWIFT_BIC =="無":
+			SWIFT_BIC=""
+		Bank_Type_Cd = cols[6]
+		Bank_Area_Cd = cols[7]
+		print cols[9]
+		Bank_Status_Cd = cols[8]
+		Current_Bank_Cd = 0
+		if cols[9] != "":
+			Current_Bank_Cd = int(cols[9])
 
-	#ds = conn.query("DELETE FROM PFEI WHERE Data_Ym='%s'"%(date))
-	cur.execute("DELETE FROM PFEI WHERE Data_Ym='%s'"%(date))
-	sql = "INSERT INTO PFEI (Data_Ym,%s) VALUES (Timestamp '%s',%s)" %(cols,date,values)
-	#print sql
-	#conn.query(sql)
-	cur.execute(sql)
-	conn.commit()
-	cur.execute("SELECT * FROM PFEI")
-	rows = cur.fetchall()
-
-
-
+		sql = "SELECT Bank_Nm,Data_Dt FROM bank_attr where Bank_Nm = '%s' order by Data_Dt desc limit 1;"%(Bank_Nm)
+		#print sql
+		cur.execute(sql)
+		row = None
+		#有資料就更新
+		for row in cur.fetchall():
+			if Start_Ym == None :
+				sql2 = "UPDATE bank_attr SET Bank_Status_Cd = '%s',Bank_En_Nm = '%s',Comment='%s',SWIFT_BIC='%s' ,Bank_Type_Cd=%s,Bank_Area_Cd=%s,Current_Bank_Cd='%03d' where Bank_Nm='%s' and Data_Dt = '%s';"\
+				%(Bank_Status_Cd,Bank_En_Name,Comment,SWIFT_BIC,Bank_Type_Cd,Bank_Area_Cd,Current_Bank_Cd,row[0],row[1])
+			else:
+				sql2 = "UPDATE bank_attr SET Bank_Status_Cd = '%s',Bank_En_Nm = '%s',Comment='%s',SWIFT_BIC='%s' ,Bank_Type_Cd=%s,Bank_Area_Cd=%s,Current_Bank_Cd='%03d',Start_Ym='%s' where Bank_Nm='%s' and Data_Dt = '%s';"\
+				%(Bank_Status_Cd,Bank_En_Name,Comment,SWIFT_BIC,Bank_Type_Cd,Bank_Area_Cd,Current_Bank_Cd,Start_Ym,row[0],row[1])
+			#print "SQL %s"%sql2
+			cur.execute(sql2)
+		#沒有資料就新增
+		if row == None:
+			if Start_Ym ==None:
+				sql2 = "INSERT INTO bank_attr (Bank_Status_Cd,Bank_En_Nm,Comment,SWIFT_BIC,Bank_Type_Cd,Bank_Area_Cd,Current_Bank_Cd,Bank_Nm,Data_Dt,Bank_Code) VALUES ('%s','%s','%s','%s' ,%s,%s,'%03d','%s',Now(),'%03d');"\
+				%(Bank_Status_Cd,Bank_En_Name,Comment,SWIFT_BIC,Bank_Type_Cd,Bank_Area_Cd,Current_Bank_Cd,Bank_Nm,Bank_Code)
+			else:
+				sql2 = "INSERT INTO bank_attr (Start_Ym,Bank_Status_Cd,Bank_En_Nm,Comment,SWIFT_BIC,Bank_Type_Cd,Bank_Area_Cd,Current_Bank_Cd,Bank_Nm,Data_Dt,Bank_Code) VALUES ('%s','%s','%s','%s','%s' ,%s,%s,'%03d','%s',Now(),'%03d');"\
+				%(Start_Ym,Bank_Status_Cd,Bank_En_Name,Comment,SWIFT_BIC,Bank_Type_Cd,Bank_Area_Cd,Current_Bank_Cd,Bank_Nm,Bank_Code)
+			#print sql2
+			cur.execute(sql2)
+		conn.commit()
+	conn.close()
+	f.close()
+	
 
 
 
 
 if __name__ == '__main__':
-	checkFolder = ['NC/']
-	path = sys.argv[1]
-	for folder in checkFolder:
-		flist = os.listdir(path+folder)
-		for f in flist:
-			if f != '.' and f!="..":
-				extractBank(path+folder+f)
+	run("/home/aha/Data/TWFS/data/Bank_Info/20131116/List1.csv")
