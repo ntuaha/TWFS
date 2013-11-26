@@ -2,17 +2,23 @@ drop table bank_attr;
 create table bank_attr(
 ETL_Dt timestamp not null default now(),
 bank_code char(4),
-Data_Dt timestamp ,
 Bank_Nm TEXT,
+Data_Dt timestamp ,
+Start_Ym timestamp,
 Bank_En_Nm TEXT,
-Bank_Function int,
-Bank_Categories int,
-Bank_BIC int,
-Bank_Short_Nm char(8),
-Bank_Area int,
-PRIMARY KEY (bank_code, Data_Dt)
+SWIFT_BIC TEXT,
+Bank_Area_Cd char(14) not null default 0,
+Bank_Type_Cd int not null default -1,
+Bank_Status_Cd char(1) not null default '',
+Current_Bank_Cd char(4),
+Tw_Area_Cd int,
+comment text,
+PRIMARY KEY (Data_Dt,bank_nm)
 );
-CREATE INDEX Bank_Nm_idx ON bank_attr(Bank_Nm);
+
+
+
+CREATE INDEX Bank_Cd_idx ON bank_attr(bank_code);
 
 
 DROP FUNCTION insertBank() CASCADE;
@@ -20,7 +26,7 @@ CREATE FUNCTION insertBank() RETURNS TRIGGER AS $insertBank$
 DECLARE
 	count_user INTEGER;
 BEGIN
-    SELECT COUNT(*) INTO count_user FROM bank_attr WHERE bank_code = NEW.bank_code and data_dt = NEW.data_dt;
+    SELECT COUNT(*) INTO count_user FROM bank_attr WHERE bank_nm= NEW.bank_nm and data_dt = NEW.data_dt;
         IF count_user =0 THEN
             RETURN NEW;
         END IF;

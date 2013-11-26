@@ -15,7 +15,7 @@ def parse(source_path,destination_path,date):
 	sh = book.sheet_by_index(0)
 
 	bank_data = {}
-	header=['年月','銀行','銀行類別','項目','數值']
+	header=['年月','銀行','銀行類別','項目','數值','英文欄位']
 	rows = []
 	total_data = [None]*15
 	jump_gap = 8
@@ -23,6 +23,23 @@ def parse(source_path,destination_path,date):
 	modelist = ['本國銀行','外國銀行在台分行','信用卡公司']
 	columns = ['流通卡數','有效卡數','本月發卡數','本月停卡數','循環信用餘額','本月簽帳金額','本月預借現金金額'
 	,'預期帳款比率','底被呆帳提足率','本月轉銷呆帳金額','循環信用利息收入','簽帳手續費收入','預借現金手續費','收單特約商店家數']
+	columns_en = [
+'Cc_F_Card_Cnt',
+'Cc_Open_Card_Cnt',
+'Cc_Issue_Card_Cnt',
+'Cc_Stop_Card_Cnt',
+'Cyc_Bal',
+'Cc_Txn_Bal',
+'Cc_Ln_Bal',
+'Cc_Payment_Rate',
+'Cc_BadDebit_Rate',
+'Cc_BadDebit_Bal',
+'Cyc_Income',
+'Txn_Fee',
+'Cc_Ln_Fee',
+'Auth_Store_Cnt']
+
+
 	for i in range(sh.nrows):
 		row_name = unicode(sh.cell_value(rowx=i,colx = 0))
 		#空的但是資料開頭就跳到資料頭
@@ -58,32 +75,49 @@ def parse(source_path,destination_path,date):
 	
 		if u"總　　　　計　Total" in row_name:
 			for i in range(len(columns)):
-				rows.append([total_data[0],"總計","全部信用卡機構",columns[i],total_data[i+1]])
+				rows.append([total_data[0],"總計","全部信用卡機構",columns[i],total_data[i+1],columns_en[i]])
 		elif  u"小計" in row_name:
 			for i in range(len(columns)):
-				rows.append([total_data[0],"小計",modelist[mode-1],columns[i],total_data[i+1]])			
+				rows.append([total_data[0],"小計",modelist[mode-1],columns[i],total_data[i+1],columns_en[i]])			
 		else: #其它一般資料
 			bank_name = unicode(sh.cell_value(rowx=i,colx = 0))
 			bank_name = re.split('[\W+|(]', bank_name, flags=re.U)[0]
 			for i in range(len(columns)):
-				rows.append([total_data[0],bank_name,modelist[mode-1],columns[i],total_data[i+1]])
+				rows.append([total_data[0],bank_name,modelist[mode-1],columns[i],total_data[i+1],columns_en[i]])
 	#將資料寫入csv
 	output(destination_path,header,date,rows)
 
 
 def parse2(source_path,destination_path,date):
 	book = xlrd.open_workbook(source_path+date+".xls")
-	print "The number of worksheets is",book.nsheets
-	print "Worksheet name(s):", book.sheet_names()
+	#print "The number of worksheets is",book.nsheets
+	#print "Worksheet name(s):", book.sheet_names()
 	bank_data = {}
 	total_data = [None]*15
-	header=['年月','銀行','項目','數值']
+	#header=['年月','銀行','項目','數值','英文欄位']
+	header=['年月','銀行','銀行類別','項目','數值','英文欄位']
 	rows = []
 	total_data[0] = date
 	mode = 0
 	modelist = ['本國銀行','外國銀行在台分行','信用卡公司']
 	columns = ['流通卡數','有效卡數','本月發卡數','本月停卡數','循環信用餘額','本月簽帳金額','本月預借現金金額'
 	,'預期帳款比率','底被呆帳提足率','本月轉銷呆帳金額','循環信用利息收入','簽帳手續費收入','預借現金手續費','收單特約商店家數']
+
+	columns_en = [
+'Cc_F_Card_Cnt',
+'Cc_Open_Card_Cnt',
+'Cc_Issue_Card_Cnt',
+'Cc_Stop_Card_Cnt',
+'Cyc_Bal',
+'Cc_Txn_Bal',
+'Cc_Ln_Bal',
+'Cc_Payment_Rate',
+'Cc_BadDebit_Rate',
+'Cc_BadDebit_Bal',
+'Cyc_Income',
+'Txn_Fee',
+'Cc_Ln_Fee',
+'Auth_Store_Cnt']
 	for sheet_num in range(book.nsheets):
 		sh = book.sheet_by_index(sheet_num)
 		for i in range(sh.nrows):
@@ -121,14 +155,14 @@ def parse2(source_path,destination_path,date):
 
 			if u"總　　　　計" in row_name:
 				for i in range(len(columns)):
-					rows.append([total_data[0],"總計","全部信用卡機構",columns[i],total_data[i+1]])
+					rows.append([total_data[0],"總計","全部信用卡機構",columns[i],total_data[i+1],columns_en[i]])
 			elif  u"小計" in row_name:
 				for i in range(len(columns)):
-					rows.append([total_data[0],"小計",modelist[mode-1],columns[i],total_data[i+1]])			
+					rows.append([total_data[0],"小計",modelist[mode-1],columns[i],total_data[i+1],columns_en[i]])			
 			else: #其它一般資料
 				bank_name = unicode(sh.cell_value(rowx=i,colx = 0))
 				for i in range(len(columns)):
-					rows.append([total_data[0],bank_name,modelist[mode-1],columns[i],total_data[i+1]])
+					rows.append([total_data[0],bank_name,modelist[mode-1],columns[i],total_data[i+1],columns_en[i]])
 	#將資料寫入csv
 	output(destination_path,header,date,rows)
 				

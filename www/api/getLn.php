@@ -1,6 +1,6 @@
 <?php
- //$_GET["date"]="[\"2013-01-01\"]";
- //$_GET["column"]="[\"Mortgage_Bal\",\"Decorator_Hse_Bal\",\"Ln_Workder_Bal\",\"Other_CL_Bal\"]";
+ $_GET["date"]="[\"2013-01-01\"]";
+ $_GET["column"]="[\"Mortgage_Bal\",\"Decorator_Hse_Bal\",\"Ln_Workder_Bal\",\"Other_CL_Bal\"]";
 if(isset($_GET["date"])){
 
         $dates = json_decode($_GET["date"],true);
@@ -13,7 +13,7 @@ if(isset($_GET["date"])){
         //$d = date_create($date);
         $firstDayofYear = date("Y-m-d",mktime(0,0,0,1,1,intval(substr($date,0,4))));
         
-        $sql = sprintf("SELECT *,date_trunc('month',data_dt) as data_dt_show FROM CL_INFO WHERE data_dt = '%s' order by bank_code",$dates[0]);
+        $sql = sprintf("SELECT *,date_trunc('month',cl_info.data_dt) as data_dt_show FROM CL_INFO left join Bank_attr as B on (CL_INFO.Bank_nm=b.bank_nm) WHERE cl_info.data_dt = '%s' and B.Bank_Type_Cd=1 order by cl_info.bank_code desc",$dates[0]);
         //echo $sql;
         $r = pg_query($dbconn,$sql);
         while($c = pg_fetch_array($r)){

@@ -52,7 +52,17 @@ def getInfoFromTd(cur,td):
 			bank_nm = td[i].string.strip().replace("\n", "")
 			if len(bank_nm)>0:
 			#bank_nm進來的時候已經是unicode
-				sql = u"INSERT INTO bank_attr (bank_nm,bank_code,Data_dt) VALUES ('%s','%s',date_trunc('day',NOW()))" %(bank_nm,bank_code)
+				if "農會" in bank_nm: 
+					bank_type_cd = 4
+				elif "漁會" in bank_nm: 
+					bank_type_cd = 5
+				elif "信用合作社" in bank_nm: 
+					bank_type_cd = 3
+				else:
+					bank_type_cd = 1	
+				Bank_Status_Cd = 'A'
+				Tw_Area_Cd = 0
+				sql = u"INSERT INTO bank_attr (bank_nm,bank_code,Data_dt,bank_type_Cd,bank_Status_Cd,tw_area_cd) VALUES ('%s','%s',date_trunc('day',NOW()),%d,'%s',%d)" %(bank_nm,bank_code,bank_type_cd,Bank_Status_Cd,Tw_Area_Cd)
 				sql = sql.encode('utf-8')
 				cur.execute(sql)
 				bank_code = None
