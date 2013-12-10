@@ -15,7 +15,9 @@ def parse(source_path,destination_path,date):
 	sh = book.sheet_by_index(0)
 
 	bank_data = {}
-	header=['年月','銀行','項目','數值']
+	header=['年月','銀行','銀行類別','項目','數值','英文項目']
+	column=["總外匯活期存款","總外匯定期存款","國內外匯活期存款","國內外匯定期存款","海外外匯活期存款","海外外匯定期存款"]
+	columns_en = ["My_TOT","FY_TOT","My_Country","Fy_Country","MY_OS","FY_OS"]	
 	rows = []
 	#header = ['年月','銀行','銀行英文','全行外匯活期存款','全行外匯定期存款','全行總額','國內外匯活期存款','國內外匯定期存款','國內總額','海外外匯活期存款','海外外匯定期存款','海外總額','金控註記']
 	total_data = [None]*10
@@ -43,9 +45,9 @@ def parse(source_path,destination_path,date):
 			total_data[1] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 			total_data[2] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 			total_data[3] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-			rows.append([total_data[0],"總計",'全行外匯活期存款',total_data[1]])
-			rows.append([total_data[0],"總計",'全行外匯定期存款',total_data[2]])
-			rows.append([total_data[0],"總計",'全行外匯總存款',total_data[3]])
+			rows.append([total_data[0],"總計",'全行外匯活期存款',column[0],total_data[1],columns_en[0]])
+			rows.append([total_data[0],"總計",'全行外匯定期存款',column[1],total_data[2],columns_en[1]])
+			#rows.append([total_data[0],"總計",'全行外匯總存款',total_data[3]])
 			continue
 		#全行銀行
 		if 1 == mode:
@@ -55,9 +57,9 @@ def parse(source_path,destination_path,date):
 			bank_data[bank_name]["ALL_MY"] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 			bank_data[bank_name]["ALL_FY"] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 			bank_data[bank_name]["ALL_Y"] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)			
-			rows.append([total_data[0],bank_name,"全行外匯活期存款",bank_data[bank_name]["ALL_MY"]])
-			rows.append([total_data[0],bank_name,"全行外匯定期存款",bank_data[bank_name]["ALL_FY"]])
-			rows.append([total_data[0],bank_name,'全行外匯總存款',bank_data[bank_name]["ALL_Y"]])
+			rows.append([total_data[0],bank_name,"全行外匯活期存款",column[0],bank_data[bank_name]["ALL_MY"],columns_en[0]])
+			rows.append([total_data[0],bank_name,"全行外匯定期存款",column[1],bank_data[bank_name]["ALL_FY"],columns_en[1]])
+			#rows.append([total_data[0],bank_name,'全行外匯總存款',bank_data[bank_name]["ALL_Y"]])
 
 
 		#國內總和
@@ -66,16 +68,16 @@ def parse(source_path,destination_path,date):
 			total_data[4] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 			total_data[5] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 			total_data[6] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-			rows.append([total_data[0],"總計",'國內外匯活期存款',total_data[4]])
-			rows.append([total_data[0],"總計",'國內外匯定期存款',total_data[5]])
-			rows.append([total_data[0],"總計",'國內外匯總存款',total_data[6]])
+			rows.append([total_data[0],"總計",'國內外匯活期存款',column[2],total_data[4],columns_en[2]])
+			rows.append([total_data[0],"總計",'國內外匯定期存款',column[3],total_data[5],columns_en[3]])
+			#rows.append([total_data[0],"總計",'國內外匯總存款',total_data[6]])
 			#Oversea 海外
 			total_data[7] = total_data[1] - total_data[4]
 			total_data[8] = total_data[2] - total_data[5]
 			total_data[9] = total_data[3] - total_data[6]
-			rows.append([total_data[0],"總計",'海外外匯活期存款',total_data[7]])
-			rows.append([total_data[0],"總計",'海外外匯定期存款',total_data[8]])
-			rows.append([total_data[0],"總計",'海外外匯總存款',total_data[9]])
+			rows.append([total_data[0],"總計",'海外外匯活期存款',column[4],total_data[7],columns_en[4]])
+			rows.append([total_data[0],"總計",'海外外匯定期存款',column[5],total_data[8],columns_en[5]])
+			#rows.append([total_data[0],"總計",'海外外匯總存款',total_data[9]])
 			continue
 		#國內銀行
 		if 2 == mode:
@@ -88,25 +90,28 @@ def parse(source_path,destination_path,date):
 			bank_data[bank_name]["OS_FY"] = bank_data[bank_name]["ALL_FY"] - bank_data[bank_name]["DB_FY"]
 			bank_data[bank_name]["OS_Y"] = bank_data[bank_name]["ALL_Y"] - bank_data[bank_name]["DB_Y"]
 			#print "%s %% %s" %(bank_data[bank_name],bank_name)
-			rows.append([total_data[0],bank_name,'國內外匯活期存款',bank_data[bank_name]["DB_MY"]])
-			rows.append([total_data[0],bank_name,'國內外匯定期存款',bank_data[bank_name]["DB_FY"]])
-			rows.append([total_data[0],bank_name,'國內外匯總存款',bank_data[bank_name]["DB_Y"]])
-			rows.append([total_data[0],bank_name,'海外外匯活期存款',bank_data[bank_name]["OS_MY"]])
-			rows.append([total_data[0],bank_name,'海外外匯定期存款',bank_data[bank_name]["OS_FY"]])
-			rows.append([total_data[0],bank_name,'海外外匯總存款',bank_data[bank_name]["OS_Y"]])
+			rows.append([total_data[0],bank_name,'國內外匯活期存款',column[2],bank_data[bank_name]["DB_MY"],columns_en[2]])
+			rows.append([total_data[0],bank_name,'國內外匯定期存款',column[3],bank_data[bank_name]["DB_FY"],columns_en[3]])
+			#rows.append([total_data[0],bank_name,'國內外匯總存款',bank_data[bank_name]["DB_Y"]])
+			rows.append([total_data[0],bank_name,'海外外匯活期存款',column[4],bank_data[bank_name]["OS_MY"],columns_en[4]])
+			rows.append([total_data[0],bank_name,'海外外匯定期存款',column[5],bank_data[bank_name]["OS_FY"],columns_en[5]])
+			#rows.append([total_data[0],bank_name,'海外外匯總存款',bank_data[bank_name]["OS_Y"]])
 
 	output(destination_path,header,date,rows)
 
 
 def parse2(source_path,destination_path,date):
 	book = xlrd.open_workbook(source_path+date+".xls")
-	print "The number of worksheets is",book.nsheets
-	print "Worksheet name(s):", book.sheet_names()
+	#print "The number of worksheets is",book.nsheets
+	#print "Worksheet name(s):", book.sheet_names()
 	modes = [1,1,1,2,2,2]
 	bank_data = {}
 	#header = ['年月','銀行','銀行英文','全行外匯活期存款','全行外匯定期存款','全行總額','國內外匯活期存款','國內外匯定期存款','國內總額','海外外匯活期存款','海外外匯定期存款','海外總額','金控註記']
-	total_data = [None]*10
-	header=['年月','銀行','項目','數值']
+	total_data = [None]*10		
+	header=['年月','銀行','銀行類別','項目','數值','英文項目']
+	column=["總外匯活期存款","總外匯定期存款","國內外匯活期存款","國內外匯定期存款","海外外匯活期存款","海外外匯定期存款"]
+	columns_en = ["My_TOT","FY_TOT","My_Country","Fy_Country","MY_OS","FY_OS"]	
+
 	rows = []
 	total_data[0] = date
 	for sheet_num in range(book.nsheets):
@@ -128,9 +133,9 @@ def parse2(source_path,destination_path,date):
 				total_data[1] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 				total_data[2] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 				total_data[3] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-				rows.append([total_data[0],"總計",'全行外匯活期存款',total_data[1]])
-				rows.append([total_data[0],"總計",'全行外匯定期存款',total_data[2]])
-				rows.append([total_data[0],"總計",'全行外匯總存款',total_data[3]])
+				rows.append([total_data[0],"總計",'全行外匯活期存款',column[0],total_data[1],columns_en[0]])
+				rows.append([total_data[0],"總計",'全行外匯定期存款',column[1],total_data[2],columns_en[1]])
+				#rows.append([total_data[0],"總計",'全行外匯總存款',total_data[3]])
 				continue
 			#全行銀行
 			if 1 == mode:
@@ -140,9 +145,9 @@ def parse2(source_path,destination_path,date):
 				bank_data[bank_name]["ALL_MY"] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 				bank_data[bank_name]["ALL_FY"] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 				bank_data[bank_name]["ALL_Y"] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)			
-				rows.append([total_data[0],bank_name,"全行外匯活期存款",bank_data[bank_name]["ALL_MY"]])
-				rows.append([total_data[0],bank_name,"全行外匯定期存款",bank_data[bank_name]["ALL_FY"]])
-				rows.append([total_data[0],bank_name,'全行外匯總存款',bank_data[bank_name]["ALL_Y"]])
+				rows.append([total_data[0],bank_name,"全行外匯活期存款",column[0],bank_data[bank_name]["ALL_MY"],columns_en[0]])
+				rows.append([total_data[0],bank_name,"全行外匯定期存款",column[1],bank_data[bank_name]["ALL_FY"],columns_en[1]])
+				#rows.append([total_data[0],bank_name,'全行外匯總存款',bank_data[bank_name]["ALL_Y"]])
 
 
 			#國內總和
@@ -151,16 +156,16 @@ def parse2(source_path,destination_path,date):
 				total_data[4] = int(float(sh.cell_value(rowx=i,colx = 1))*1e6)
 				total_data[5] = int(float(sh.cell_value(rowx=i,colx = 2))*1e6)
 				total_data[6] = int(float(sh.cell_value(rowx=i,colx = 3))*1e6)
-				rows.append([total_data[0],"總計",'國內外匯活期存款',total_data[4]])
-				rows.append([total_data[0],"總計",'國內外匯定期存款',total_data[5]])
-				rows.append([total_data[0],"總計",'國內外匯總存款',total_data[6]])
+				rows.append([total_data[0],"總計",'國內外匯活期存款',column[2],total_data[4],columns_en[2]])
+				rows.append([total_data[0],"總計",'國內外匯定期存款',column[3],total_data[5],columns_en[3]])
+				#rows.append([total_data[0],"總計",'國內外匯總存款',total_data[6]])
 				#Oversea 海外
 				total_data[7] = total_data[1] - total_data[4]
 				total_data[8] = total_data[2] - total_data[5]
 				total_data[9] = total_data[3] - total_data[6]
-				rows.append([total_data[0],"總計 ",'海外外匯活期存款',total_data[7]])
-				rows.append([total_data[0],"總計 ",'海外外匯定期存款',total_data[8]])
-				rows.append([total_data[0],"總計 ",'海外外匯總存款',total_data[9]])
+				rows.append([total_data[0],"總計 ",'海外外匯活期存款',column[4],total_data[7],columns_en[4]])
+				rows.append([total_data[0],"總計 ",'海外外匯定期存款',column[5],total_data[8],columns_en[5]])
+				#rows.append([total_data[0],"總計 ",'海外外匯總存款',total_data[9]])
 				continue
 			#國內銀行
 			if 2 == mode:
@@ -172,12 +177,12 @@ def parse2(source_path,destination_path,date):
 				bank_data[bank_name]["OS_MY"] = bank_data[bank_name]["ALL_MY"] - bank_data[bank_name]["DB_MY"]
 				bank_data[bank_name]["OS_FY"] = bank_data[bank_name]["ALL_FY"] - bank_data[bank_name]["DB_FY"]
 				bank_data[bank_name]["OS_Y"] = bank_data[bank_name]["ALL_Y"] - bank_data[bank_name]["DB_Y"]
-				rows.append([total_data[0],bank_name,'國內外匯活期存款',bank_data[bank_name]["DB_MY"]])
-				rows.append([total_data[0],bank_name,'國內外匯定期存款',bank_data[bank_name]["DB_FY"]])
-				rows.append([total_data[0],bank_name,'國內外匯總存款',bank_data[bank_name]["DB_Y"]])
-				rows.append([total_data[0],bank_name,'海外外匯活期存款',bank_data[bank_name]["OS_MY"]])
-				rows.append([total_data[0],bank_name,'海外外匯定期存款',bank_data[bank_name]["OS_FY"]])
-				rows.append([total_data[0],bank_name,'海外外匯總存款',bank_data[bank_name]["OS_Y"]])
+				rows.append([total_data[0],bank_name,'國內外匯活期存款',column[2],bank_data[bank_name]["DB_MY"],columns_en[2]])
+				rows.append([total_data[0],bank_name,'國內外匯定期存款',column[3],bank_data[bank_name]["DB_FY"],columns_en[3]])
+				#rows.append([total_data[0],bank_name,'國內外匯總存款',bank_data[bank_name]["DB_Y"]])
+				rows.append([total_data[0],bank_name,'海外外匯活期存款',column[4],bank_data[bank_name]["OS_MY"],columns_en[4]])
+				rows.append([total_data[0],bank_name,'海外外匯定期存款',column[5],bank_data[bank_name]["OS_FY"],columns_en[5]])
+				#rows.append([total_data[0],bank_name,'海外外匯總存款',bank_data[bank_name]["OS_Y"]])
 	output(destination_path,header,date,rows)
 				
 

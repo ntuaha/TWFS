@@ -32,6 +32,8 @@ def makeSQL(date,data,Dataset):
 #			continue				
 		else:		
 			sql = "SELECT bank_code FROM bank_attr WHERE bank_nm like '%%%s%%' ORDER BY Data_dt desc LIMIT 1;"%(bank_nm)
+			#print bank_nm
+			#print sql
 			r = cur.execute(sql)
 			row = None
 			for row in cur.fetchall():  				
@@ -109,7 +111,8 @@ def runAll(path,t):
 			read("%s%d%02d.csv"%(path,yy,mm),t)
 
 if __name__ == '__main__':
-	t = "CC"
-	path = '/home/aha/Data/TWFS/data/%s/'%(t)
-	runAll(path,t)
+	#t = "CC"
+	#path = '/home/aha/Data/TWFS/data/%s/'%(t)
+	path = '/home/aha/Data/TWFS/data/%s/'%(sys.argv[1])
+	runAll(path,sys.argv[1])
 
