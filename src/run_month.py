@@ -156,6 +156,30 @@ class TWFS_ETL:
 			isResult = isResult and self.validate_loading(folder,year,month)
 		return isResult
 
+	def etl(self,year,month):
+		#isExtract = self.extract(year,month)
+		isExtract = True
+		isTransform = self.transform(year,month)
+		isLoading = self.load(year,month)
+		if isExtract == True and isTransform ==True and isLoading == True:
+			Title = "完成"
+			Result = "成功"
+			Detail = "%4d-%02d Taiwan Finacial Statistics 資料獲得"%(year,month)
+			api = '688430041191592'; 
+			api_secret = '6bb097ca9fe10f1bca0c1c320232eba2';
+			callback_website = 'https://github.com/ntuaha/TWFS/';
+			picture_url_tick = 'http://www.iconarchive.com/icons/pixelmixer/basic/64/tick-icon.png';
+			facebook_id = '100000185149998';
+			cmd = os.popen("/usr/bin/curl -F grant_type=client_credentials -F client_id=%s -F client_secret=%s -k https://graph.facebook.com/oauth/access_token"%(api,api_secret))
+			k = cmd.read()
+			access_token = k.split("=")[1] 
+			work = "/usr/bin/curl -F 'access_token=%s' -F 'message=%s' -F 'name=%s' -F 'picture=%s' -F 'caption=%s' -k https://graph.facebook.com/%s/feed"%(access_token,Detail,Title,picture_url_tick,Result,facebook_id)
+			print work
+			cmd = os.popen(work)
+		else:
+			pass
+
+
 
 
 
@@ -167,8 +191,7 @@ if __name__ == '__main__':
 	year = 102
 	month = 07
 	agent = TWFS_ETL()
-	print "Extracting Process is success? %s"%(agent.extract(year,month))
-	print "Trasforming Process is success? %s"%(agent.transform(year,month))
-	print "Loading Process is success? %s"%(agent.load(year,month))
+	agent.etl(year,month)
+
 	
 
