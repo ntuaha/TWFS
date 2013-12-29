@@ -150,15 +150,15 @@ class TWFS_ETL:
 		#FOLDERS = ["Y_BAL","DFEI","MD_BAL","MD_AUM","FD_BAL","NC","CD","AREA_DP","CC","ATM","OC","PFEI","LPPE","LSME","LN","LN_AUM","CL","CL_INFO"]
 		isResult = True
 		for i in range(0,len(self.FOLDERS)):
-			if self.FOLDERS[i] == "OC" or self.FOLDERS[i]=="AREA_DP" or self.FOLDERS[i]=="DFEI" or self.FOLDERS[i]=="NC":
+			if self.FOLDERS[i] == "OC" or self.FOLDERS[i]=="LPPE"or self.FOLDERS[i]=="AREA_DP" or self.FOLDERS[i]=="DFEI" or self.FOLDERS[i]=="NC":
 				continue
 			folder = self.FOLDERS[i]
 			isResult = isResult and self.validate_loading(folder,year,month)
 		return isResult
 
 	def etl(self,year,month):
-		#isExtract = self.extract(year,month)
-		isExtract = True
+		isExtract = self.extract(year,month)
+		#isExtract = True
 		isTransform = self.transform(year,month)
 		isLoading = self.load(year,month)
 		if isExtract == True and isTransform ==True and isLoading == True:
@@ -174,7 +174,7 @@ class TWFS_ETL:
 			k = cmd.read()
 			access_token = k.split("=")[1] 
 			work = "/usr/bin/curl -F 'access_token=%s' -F 'message=%s' -F 'name=%s' -F 'picture=%s' -F 'caption=%s' -k https://graph.facebook.com/%s/feed"%(access_token,Detail,Title,picture_url_tick,Result,facebook_id)
-			print work
+			#print work
 			cmd = os.popen(work)
 		else:
 			pass
@@ -188,10 +188,10 @@ class TWFS_ETL:
 
 
 if __name__ == '__main__':
-	year = 102
-	month = 07
+	#year = 102
+	#month = 07
 	agent = TWFS_ETL()
-	agent.etl(year,month)
+	agent.etl(int(sys.argv[1]),int(sys.argv[2]))
 
 	
 
