@@ -57,14 +57,14 @@ class TWFS_ETL:
 			transformFunction(from_path,to_path,date)	
 		import transform.transform_Y_Bal
 		run("Y_BAL",transform.transform_Y_Bal.parse2,year,month)
-		import transform.transform_ATM
-		parser = transform.transform_ATM.TRANSFORM_ATM('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
-		parser.runParse('%d%02d'%(year,month))
+		#import transform.transform_ATM
+		#parser = transform.transform_ATM.TRANSFORM_ATM('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
+		#parser.runParse('%d%02d'%(year,month))
 		import transform.transform_CC
 		run("CC",transform.transform_CC.parse2,year,month)
-		import transform.transform_CD
-		parser = transform.transform_CD.TRANSFORM_CD('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
-		parser.runParse('%d%02d'%(year,month))
+		#import transform.transform_CD
+		#parser = transform.transform_CD.TRANSFORM_CD('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
+		#parser.runParse('%d%02d'%(year,month))
 		import transform.transform_CL_INFO
 		parser = transform.transform_CL_INFO.TRANSFORM_CL_INFO('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
 		parser.runParse('%d%02d'%(year,month))
@@ -135,8 +135,8 @@ class TWFS_ETL:
 		loading.md_bal.read('/home/aha/Data/TWFS/data/MD_BAL/%d%02d.csv'%(year,month),"MD_BAL")
 		loading.md_bal.read('/home/aha/Data/TWFS/data/MD_AUM/%d%02d.csv'%(year,month),"MD_AUM")
 		loading.md_bal.read('/home/aha/Data/TWFS/data/FD_BAL/%d%02d.csv'%(year,month),"FD_BAL")
-		loading.md_bal.read('/home/aha/Data/TWFS/data/CD/%d%02d.csv'%(year,month),"CD")
-		loading.md_bal.read('/home/aha/Data/TWFS/data/ATM/%d%02d.csv'%(year,month),"ATM")
+		#loading.md_bal.read('/home/aha/Data/TWFS/data/CD/%d%02d.csv'%(year,month),"CD")
+		#loading.md_bal.read('/home/aha/Data/TWFS/data/ATM/%d%02d.csv'%(year,month),"ATM")
 		import loading.CC
 		loading.CC.read('/home/aha/Data/TWFS/data/Y_BAL/%d%02d.csv'%(year,month),"Y_BAL")
 		loading.CC.read('/home/aha/Data/TWFS/data/CC/%d%02d.csv'%(year,month),"CC")
