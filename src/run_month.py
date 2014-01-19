@@ -9,14 +9,18 @@ sys.setdefaultencoding('utf8')
 
 class TWFS_ETL:
 	FOLDERS = ["Y_BAL","DFEI","MD_BAL","MD_AUM","FD_BAL","NC","CD","AREA_DP","CC","ATM","OC","PFEI","LPPE","LSME","LN","LN_AUM","CL","CL_INFO"]
+	#FOLDERS = ["Y_BAL","MD_BAL","MD_AUM","FD_BAL","NC","CD","AREA_DP","CC","ATM","OC","PFEI","LPPE","LSME","LN","LN_AUM","CL","CL_INFO"]
 
 	def extract(self,year,month):
 		from extract.download import Download
 		base_path = "/home/aha/Data/TWFS/" 
 		#設定其它參數
 		CIS = ["4_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1"]
+		#CIS = ["2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1","2_1"]
 		FOLDERS = ["DFEI","MD_BAL","MD_AUM","FD_BAL","NC","Y_BAL","CD","AREA_DP","CC","ATM","OC","PFEI","LPPE","LSME","LN","LN_AUM","CL","CL_INFO"]
+		#FOLDERS = ["MD_BAL","MD_AUM","FD_BAL","NC","Y_BAL","CD","AREA_DP","CC","ATM","OC","PFEI","LPPE","LSME","LN","LN_AUM","CL","CL_INFO"]
 		FILES = ["4140","22010","22020","22030","22040","22050","22060","213010","29010","28010","21020","21010","24030","24040","24010","24020","25010","25020"]	
+		#FILES = ["22010","22020","22030","22040","22050","22060","213010","29010","28010","21020","21010","24030","24040","24010","24020","25010","25020"]	
 		dlAgent = Download()
 		for fd in FOLDERS:
 			dlAgent.checkFolder(base_path+"rawdata/"+fd+"/")

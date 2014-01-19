@@ -1,9 +1,6 @@
-HTTP/1.1 200 OK
-Accept-Ranges: bytes
-ETag: W/"97280-1387160140468"
-Last-Modified: Mon, 16 Dec 2013 02:15:40 GMT
-Content-Type: application/vnd.ms-excel
-Content-Length: 97280
-Date: Sun, 29 Dec 2013 15:40:42 GMT
-Set-Cookie: TS7574e2=575c6711b40d115912d9b743db7556d6c04f984eeb5c3c2c52c04276; Path=/
+HTTP/1.1 404 Not Found
+Content-Type: text/html;charset=utf-8
+Content-Length: 1046
+Date: Sun, 19 Jan 2014 11:58:24 GMT
+Set-Cookie: TS7574e2=e45b9b1320ad3889e6508791224f56dcea920188cb43456852dbbdf6; Path=/
 
