@@ -11,9 +11,13 @@ reload(sys)
 sys.setdefaultencoding('utf8') 
 
 
-def makeSQL(date,data,Dataset):
+def makeSQL(date,data,Dataset,linkinfo):
+	f = open(linkinfo,'r')
+	lines = f.readlines()
+	f.close()
 	bank_nms = data.keys()
-	conn = psycopg2.connect(database="data", user="aha", password="dataaha305", host="127.0.0.1", port="5432")
+	conn = psycopg2.connect(database="%s"%lines[0][:-1], user="%s"%lines[1][:-1], password="%s"%lines[2][:-1], host="%s"%lines[3][:-1], port="%s"%lines[4][:-1])
+
 	cur = conn.cursor()	
 	bank_code = None
 	add_file = open("./add_file.log","a+")
@@ -31,7 +35,10 @@ def makeSQL(date,data,Dataset):
 #		elif bank_nm=="小計":
 #			continue				
 		else:		
+			#bank_nm = bank_nm.replace(u'?', "")
+			#bank_nm= re.sub(u'\?+','',bank_nm)
 			sql = "SELECT bank_code FROM bank_attr WHERE bank_nm like '%%%s%%' ORDER BY Data_dt desc LIMIT 1;"%(bank_nm)
+			#print date
 			#print bank_nm
 			#print sql
 			r = cur.execute(sql)
@@ -50,7 +57,7 @@ def makeSQL(date,data,Dataset):
 				add_file.write("%s:%s\n"%(bank_nm,sql))
 				cur.execute(sql)
 				conn.commit()
-
+		#print bank_code
 		data[bank_nm]["bank_code"] = "'"+bank_code+"'"
 		data[bank_nm]["bank_nm"] = "'"+bank_nm+"'"
 		cols  = ','.join(data[bank_nm].keys())
@@ -68,7 +75,7 @@ def makeSQL(date,data,Dataset):
 	add_file.close()
 	conn.close()
 
-def read(source_path,dataset):
+def read(source_path,dataset,linkinfo):
 	f = open(source_path,"r")
 	header = f.readline()
 	data = {}
@@ -78,12 +85,14 @@ def read(source_path,dataset):
 		if not lines:
 			break		
 		for line in lines:
-			rows = line.split(',')
+			#記得加上utf-8使用的 逗號
+			rows = line.split(u',')
 			#去掉特殊字元
+
 			row = [x.strip().strip("\t").strip("\r").strip("　") for x in rows]
-			#確認使用
-#			for i in row:
-#				print i
+
+
+
 			year = int(row[0][:-2])+1911
 			month = int(row[0][-2:])
 			date = "%d-%d-01" % (year,month)
@@ -101,18 +110,18 @@ def read(source_path,dataset):
 	for i in data:
 		for j in data[i]:
 			data[i][j] = str(data[i][j])
-	makeSQL(date,data,dataset)
+	makeSQL(date,data,dataset,linkinfo)
 
-def runAll(path,t):
+def runAll(path,t,linkinfo):
 #	for yy in range(101,102):
 #		for mm in range(1,2):
 	for yy in range(95,103):
 		for mm in range(1,13):
-			read("%s%d%02d.csv"%(path,yy,mm),t)
-
+			read("%s%d%02d.csv"%(path,yy,mm),t,linkinfo)
+#python CC.py Y_BAL /home/aha/Data/TWFS/link.inf
 if __name__ == '__main__':
 	#t = "CC"
 	#path = '/home/aha/Data/TWFS/data/%s/'%(t)
 	path = '/home/aha/Data/TWFS/data/%s/'%(sys.argv[1])
-	runAll(path,sys.argv[1])
+	runAll(path,sys.argv[1],sys.argv[2])
 
