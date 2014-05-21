@@ -115,7 +115,7 @@ def read(source_path,dataset,linkinfo):
 def runAll(path,t,linkinfo):
 #	for yy in range(101,102):
 #		for mm in range(1,2):
-	for yy in range(95,103):
+	for yy in range(95,104):
 		for mm in range(1,13):
 			read("%s%d%02d.csv"%(path,yy,mm),t,linkinfo)
 #python CC.py Y_BAL /home/aha/Data/TWFS/link.inf
