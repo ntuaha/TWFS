@@ -1,0 +1,9 @@
+*.xls
+cookie0001.txt
+#data/*
+*/db_info.py
+
+
+
+#Postgresql link.inf
+link.inf
