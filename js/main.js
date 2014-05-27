@@ -1,8 +1,8 @@
 $(function(){
 
-var margin = {top: 20, right: 80, bottom: 30, left: 50},
+var margin = {top: 20, right: 50, bottom: 30, left: 100},
     width = $("#Cc_Open_Card_Cnt").width() - margin.left - margin.right,
-    height = $("#Cc_Open_Card_Cnt").width()*0.6 - margin.top - margin.bottom;
+    height = $("#Cc_Open_Card_Cnt").width()*0.4 - margin.top - margin.bottom;
 
 var parseDate = d3.time.format("%Y-%m-%d").parse;
 
@@ -68,7 +68,7 @@ var svg = d3.select("#Cc_Open_Card_Cnt").append("svg")
 	      .attr("y", 6)
 	      .attr("dy", ".71em")
 	      .style("text-anchor", "end")
-	      .text("Temperature (ºF)");
+	      .text("流通張數");
 
 	  var city = svg.selectAll(".city")
 	      .data(cities)
