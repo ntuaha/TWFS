@@ -1,8 +1,8 @@
 $(function(){
 
 var margin = {top: 20, right: 50, bottom: 30, left: 100},
-    width = $("#Cc_Open_Card_Cnt").width() - margin.left - margin.right,
-    height = $("#Cc_Open_Card_Cnt").width()*0.4 - margin.top - margin.bottom;
+    width = $("#cc_txn_bal").width() - margin.left - margin.right,
+    height = $("#cc_txn_bal").width()*0.4 - margin.top - margin.bottom;
 
 var parseDate = d3.time.format("%Y-%m-%d").parse;
 
