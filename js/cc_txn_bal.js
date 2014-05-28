@@ -25,14 +25,14 @@ var line = d3.svg.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.temperature); });
 
-var svg = d3.select("#Cc_Open_Card_Cnt").append("svg")
+var svg = d3.select("#cc_txn_bal").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 /*  Begin of parsing data*/
-	d3.csv("./data/bank_cc.csv", function(error, data) {
+	d3.csv("./data/cc_txn_bal.csv", function(error, data) {
 	  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
 
 	  data.forEach(function(d) {
@@ -68,7 +68,7 @@ var svg = d3.select("#Cc_Open_Card_Cnt").append("svg")
 	      .attr("y", 6)
 	      .attr("dy", ".71em")
 	      .style("text-anchor", "end")
-	      .text("流通張數");
+	      .text("簽帳金額");
 
 	  var city = svg.selectAll(".city")
 	      .data(cities)
