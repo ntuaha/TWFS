@@ -4,13 +4,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>台灣銀行信用卡簽帳金額資訊</title>
+    <title>台灣銀行信用卡平均簽帳金額資訊</title>
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <!-- Bootstrap -->
     <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- D3 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js" charset="utf-8"></script>
-	<script src="./js/cc_txn_bal.js" charset="utf-8"></script>
+	<script>
+		var file='./data/avg_cc_txn_bal.csv'
+	</script>
+	<script src="./js/show.js" charset="utf-8"></script>
 
 
 	<style>
@@ -53,7 +56,7 @@
   		<div class="col-md-10 col-md-offset-1">
 			<div class="row">
 					<h2>簽帳金額</h2>
-					<div class="row col-md-12" id ="cc_txn_bal">
+					<div class="row col-md-12" id ="display">
 					</div>
 			</div>
 		</div>

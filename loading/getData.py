@@ -71,7 +71,8 @@ class GetData:
 
 
 if __name__ == "__main__":
-	worker = GetData("./getData.sql","cc","Cc_Txn_Bal","Cc_Txn_Bal",'2010-04-01','cc_txn_bal.csv')
+	#worker = GetData("./getData.sql","cc","Cc_Txn_Bal","Cc_Txn_Bal",'2010-04-01','cc_txn_bal.csv')
+	worker = GetData("./getData.sql",sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
 	worker.write()
 	worker.run()
 	worker.modify()
