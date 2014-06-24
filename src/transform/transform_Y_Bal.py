@@ -224,7 +224,7 @@ if __name__ == '__main__':
 	to_path = '/home/aha/Data/TWFS/data/%s/' % (folder)
 	checkFolder(to_path)
 	worker = Y_Bal()
-	worker.parse2(from_path,to_path,'10302')	
+	worker.parse2(from_path,to_path,'10303')	
 	'''
 	for yy in range(95,100):
 		for mm in range(1,13):

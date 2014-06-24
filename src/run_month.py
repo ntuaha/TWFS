@@ -55,8 +55,16 @@ class TWFS_ETL:
 			date = '%d%02d'%(year,month)
 			#Transform_Y_Bal
 			transformFunction(from_path,to_path,date)	
-		import transform.transform_Y_Bal
-		run("Y_BAL",transform.transform_Y_Bal.parse2,year,month)
+
+		def run2(folder,obj,year,month):
+			from_path= '/home/aha/Data/TWFS/rawdata/%s/' % (folder)
+			to_path = '/home/aha/Data/TWFS/data/%s/' % (folder)
+			self.checkFolder(to_path)
+			date = '%d%02d'%(year,month)
+			#Transform_Y_Bal
+			obj.parse2(from_path,to_path,date)	
+		import transform.transform_Y_Bal 
+		run2("Y_BAL",transform.transform_Y_Bal.Y_Bal(),year,month)
 		#import transform.transform_ATM
 		#parser = transform.transform_ATM.TRANSFORM_ATM('/home/aha/Data/TWFS/rawdata/','/home/aha/Data/TWFS/data/')
 		#parser.runParse('%d%02d'%(year,month))
@@ -101,7 +109,7 @@ class TWFS_ETL:
 		
 		isResult = True
 		for i in range(0,len(self.FOLDERS)):
-			if self.FOLDERS[i] == "OC" or self.FOLDERS[i]=="AREA_DP" or self.FOLDERS[i]=="DFEI":
+			if self.FOLDERS[i] == "OC" or self.FOLDERS[i]=="LPPE"or self.FOLDERS[i]=="AREA_DP" or self.FOLDERS[i]=="DFEI" or self.FOLDERS[i]=="NC" or self.FOLDERS[i]=="CD" or self.FOLDERS[i]=="ATM":
 				continue
 			folder = self.FOLDERS[i]
 			isResult = isResult and self.validate_transfromation("/home/aha/Data/TWFS/data/%s/%d%02d.csv"%(folder,year,month))
@@ -138,8 +146,8 @@ class TWFS_ETL:
 		#loading.md_bal.read('/home/aha/Data/TWFS/data/CD/%d%02d.csv'%(year,month),"CD")
 		#loading.md_bal.read('/home/aha/Data/TWFS/data/ATM/%d%02d.csv'%(year,month),"ATM")
 		import loading.CC
-		loading.CC.read('/home/aha/Data/TWFS/data/Y_BAL/%d%02d.csv'%(year,month),"Y_BAL")
-		loading.CC.read('/home/aha/Data/TWFS/data/CC/%d%02d.csv'%(year,month),"CC")
+		loading.CC.read('/home/aha/Data/TWFS/data/Y_BAL/%d%02d.csv'%(year,month),"Y_BAL",'/home/aha/Data/TWFS/link.inf')
+		loading.CC.read('/home/aha/Data/TWFS/data/CC/%d%02d.csv'%(year,month),"CC",'/home/aha/Data/TWFS/link.inf')
 		import loading.Cl_Info
 		loading.Cl_Info.read('/home/aha/Data/TWFS/data/CL_INFO/%d%02d.csv'%(year,month),"CL_INFO")
 		import loading.LSME
@@ -154,15 +162,16 @@ class TWFS_ETL:
 		#FOLDERS = ["Y_BAL","DFEI","MD_BAL","MD_AUM","FD_BAL","NC","CD","AREA_DP","CC","ATM","OC","PFEI","LPPE","LSME","LN","LN_AUM","CL","CL_INFO"]
 		isResult = True
 		for i in range(0,len(self.FOLDERS)):
-			if self.FOLDERS[i] == "OC" or self.FOLDERS[i]=="LPPE"or self.FOLDERS[i]=="AREA_DP" or self.FOLDERS[i]=="DFEI" or self.FOLDERS[i]=="NC":
+			if self.FOLDERS[i] == "OC" or self.FOLDERS[i]=="LPPE"or self.FOLDERS[i]=="AREA_DP" or self.FOLDERS[i]=="DFEI" or self.FOLDERS[i]=="NC" or self.FOLDERS[i]=="CD" or self.FOLDERS[i]=="ATM":
 				continue
-			folder = self.FOLDERS[i]
-			isResult = isResult and self.validate_loading(folder,year,month)
+			else:
+				folder = self.FOLDERS[i]
+				isResult = isResult and self.validate_loading(folder,year,month)
 		return isResult
 
 	def etl(self,year,month):
-		isExtract = self.extract(year,month)
-		#isExtract = True
+		#isExtract = self.extract(year,month)
+		isExtract = True
 		isTransform = self.transform(year,month)
 		isLoading = self.load(year,month)
 		if isExtract == True and isTransform ==True and isLoading == True:
