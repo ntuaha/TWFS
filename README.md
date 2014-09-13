@@ -11,6 +11,14 @@ Taiwan Financial Statistics
 
 - [資料庫格式](https://docs.google.com/spreadsheet/ccc?key=0AhEplIEPKoHfdHZxd1IzRVhUYnhPaVdxRnVoaExBTEE&usp=sharing)
 
+
+## 使用方法
+
+```
+  $python run_month [國曆年] [月份]
+```
+
+
 ## 聯絡方法
 email: ntuaha@gmail.com
 
