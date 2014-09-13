@@ -3,6 +3,7 @@ import os
 import sys
 import psycopg2
 from types import *
+from extract.DL import DL
 reload(sys) 
 sys.setdefaultencoding('utf8')
 
