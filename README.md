@@ -7,6 +7,10 @@
 - 定期執行爬蟲下載最新月的原始 `xls`
 - 透過 GitHub Actions 自動建置與部署
 
+## 網站
+
+- GitHub Pages: https://ntuaha.github.io/TWFS/
+
 ## 目錄
 
 - `/pipelines/build_databases.py`：CSV -> SQLite + DuckDB + `www/data/*`
