@@ -47,6 +47,10 @@ python pipelines/build_databases.py --base-path .
 新資料來源（預設）：`https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT`  
 舊來源相容模式：`python pipelines/crawl_latest.py --base-path . --source legacy`
 
+說明：
+- 網頁可用「銀行搜尋」直接篩選指定銀行資訊（避免機構清單過長）
+- 爬蟲會自動從新站頁面偵測可用 `TableID`（`Bxx`），降低手動維護成本
+
 ## GitHub Actions / gh-pages
 
 已提供 workflow：

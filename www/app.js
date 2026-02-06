@@ -2,11 +2,13 @@ const state = {
   catalog: null,
   rows: [],
   filtered: [],
+  institutions: [],
 };
 
 const modeSelect = document.getElementById("modeSelect");
 const monthSelect = document.getElementById("monthSelect");
 const institutionSelect = document.getElementById("institutionSelect");
+const bankSearchInput = document.getElementById("bankSearchInput");
 const datasetSelect = document.getElementById("datasetSelect");
 const keywordInput = document.getElementById("keywordInput");
 const monthWrap = document.getElementById("monthWrap");
@@ -35,6 +37,23 @@ function fillSelect(selectEl, items, mapLabel = (x) => x, mapValue = (x) => x) {
   }
 }
 
+function updateInstitutionOptions() {
+  const query = bankSearchInput.value.trim().toLowerCase();
+  const prev = institutionSelect.value;
+  const items = !query
+    ? state.institutions
+    : state.institutions.filter((it) => it.name.toLowerCase().includes(query));
+
+  fillSelect(institutionSelect, items, (it) => it.name, (it) => it.file);
+  if (!items.length) {
+    return false;
+  }
+  if (items.some((it) => it.file === prev)) {
+    institutionSelect.value = prev;
+  }
+  return true;
+}
+
 async function loadCatalog() {
   const res = await fetch("./data/catalog.json", { cache: "no-store" });
   if (!res.ok) {
@@ -43,7 +62,8 @@ async function loadCatalog() {
   state.catalog = await res.json();
 
   fillSelect(monthSelect, [...state.catalog.months].reverse());
-  fillSelect(institutionSelect, state.catalog.institutions, (it) => it.name, (it) => it.file);
+  state.institutions = state.catalog.institutions || [];
+  updateInstitutionOptions();
 
   for (const ds of state.catalog.datasets) {
     const opt = document.createElement("option");
@@ -78,9 +98,13 @@ async function loadRows() {
 function applyFilters() {
   const dataset = datasetSelect.value;
   const keyword = keywordInput.value.trim().toLowerCase();
+  const bankQuery = bankSearchInput.value.trim().toLowerCase();
 
   state.filtered = state.rows.filter((r) => {
     if (dataset !== "ALL" && r.dataset !== dataset) {
+      return false;
+    }
+    if (bankQuery && !String(r.institution || "").toLowerCase().includes(bankQuery)) {
       return false;
     }
     if (!keyword) {
@@ -136,6 +160,12 @@ function syncModeUI() {
 
 async function refreshData() {
   syncModeUI();
+  if (!updateInstitutionOptions()) {
+    state.rows = [];
+    state.filtered = [];
+    render();
+    return;
+  }
   await loadRows();
 }
 
@@ -143,6 +173,13 @@ function wireEvents() {
   modeSelect.addEventListener("change", refreshData);
   monthSelect.addEventListener("change", refreshData);
   institutionSelect.addEventListener("change", refreshData);
+  bankSearchInput.addEventListener("input", () => {
+    if (modeSelect.value === "institution") {
+      refreshData();
+      return;
+    }
+    applyFilters();
+  });
   datasetSelect.addEventListener("change", applyFilters);
   keywordInput.addEventListener("input", applyFilters);
 }

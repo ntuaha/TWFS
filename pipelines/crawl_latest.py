@@ -12,6 +12,7 @@ import csv
 import hashlib
 import io
 import json
+import re
 import ssl
 from dataclasses import dataclass
 from datetime import date
@@ -50,6 +51,9 @@ OPENAPI_SOURCES: list[OpenAPISource] = [
     OpenAPISource("FSC_B13", "B13"),
     OpenAPISource("FSC_B14", "B14"),
 ]
+OPENAPI_DISCOVERY_URL = (
+    "https://stat.fsc.gov.tw/FSCChartShow_Restore/CRPages/MS_Chart_Show.aspx?Beauid=Banking"
+)
 
 LEGACY_SOURCES: list[LegacySource] = [
     LegacySource("DFEI", "4_1", "4140"),
@@ -136,12 +140,28 @@ def detect_latest_token(csv_bytes: bytes) -> str | None:
     return latest
 
 
-def crawl_openapi(base_path: Path, data_type: int) -> list[dict]:
+def discover_openapi_sources() -> list[OpenAPISource]:
+    try:
+        html = fetch_bytes(OPENAPI_DISCOVERY_URL, timeout=30).decode(
+            "utf-8-sig", errors="replace"
+        )
+        table_ids = sorted(
+            set(re.findall(r'<option value="(B\\d{2})">', html)),
+            key=lambda x: int(x[1:]),
+        )
+        if table_ids:
+            return [OpenAPISource(f"FSC_{tid}", tid) for tid in table_ids]
+    except Exception:
+        pass
+    return OPENAPI_SOURCES
+
+
+def crawl_openapi(base_path: Path, data_type: int, openapi_sources: list[OpenAPISource]) -> list[dict]:
     output_dir = base_path / "rawdata" / "openapi"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     results = []
-    for src in OPENAPI_SOURCES:
+    for src in openapi_sources:
         params = urlencode(
             {"DATA_TYPE": data_type, "TableID": src.table_id, "OUTPUT_FILE": "Y"}
         )
@@ -298,7 +318,10 @@ def main() -> None:
     }
 
     if args.source in {"openapi", "both"}:
-        manifest["sources"].extend(crawl_openapi(base_path, args.data_type))
+        openapi_sources = discover_openapi_sources()
+        manifest["openapi_table_count"] = len(openapi_sources)
+        manifest["openapi_table_ids"] = [s.table_id for s in openapi_sources]
+        manifest["sources"].extend(crawl_openapi(base_path, args.data_type, openapi_sources))
     if args.source in {"legacy", "both"}:
         manifest["sources"].extend(crawl_legacy(base_path, args.lookback_months))
 
