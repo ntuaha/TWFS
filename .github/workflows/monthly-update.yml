@@ -1,0 +1,48 @@
+name: Monthly Data Update
+
+on:
+  schedule:
+    - cron: "10 3 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: monthly-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Crawl latest raw data
+        run: python pipelines/crawl_latest.py --base-path . --lookback-months 36
+
+      - name: Build databases and status report
+        run: python pipelines/build_databases.py --base-path .
+
+      - name: Commit update artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add database/crawl_manifest.json database/issue_status_report.json
+          if git diff --cached --quiet; then
+            echo "No update artifacts changed"
+            exit 0
+          fi
+          git commit -m "chore(data): monthly refresh $(date -u +'%Y-%m-%d')"
+          git push

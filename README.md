@@ -49,13 +49,15 @@ python pipelines/build_databases.py --base-path .
 已提供 workflow：
 
 - `/.github/workflows/ci.yml`
+- `/.github/workflows/monthly-update.yml`（每月自動爬蟲、重建、提交更新）
 - `/.github/workflows/deploy-gh-pages.yml`
 
 啟用方式：
 
 1. 專案推上 GitHub（`master` 或 `main`）
 2. GitHub Repository Settings -> Pages -> Build and deployment 選擇 `GitHub Actions`
-3. Workflow `Deploy gh-pages` 可手動觸發，或依排程（每月 5 日）自動執行
+3. Workflow `Monthly Data Update` 每月 1 日 UTC 03:10 自動執行資料更新並提交
+4. `master/main` 有新 commit 後，`Deploy gh-pages` 會自動部署網站
 
 ## Data Dictionary
 

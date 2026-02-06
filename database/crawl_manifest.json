@@ -1,0 +1,132 @@
+{
+  "generated_at": "2026-02-06",
+  "lookback_months": 36,
+  "sources": [
+    {
+      "dataset": "DFEI",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "MD_BAL",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "MD_AUM",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "FD_BAL",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "NC",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "Y_BAL",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "CD",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "AREA_DP",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "CC",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "ATM",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "OC",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "PFEI",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "LPPE",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "LSME",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "LN",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "LN_AUM",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "CL",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    },
+    {
+      "dataset": "CL_INFO",
+      "status": "missing",
+      "url": null,
+      "saved_to": null,
+      "roc_ym": null
+    }
+  ]
+}
