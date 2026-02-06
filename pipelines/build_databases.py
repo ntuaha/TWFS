@@ -70,6 +70,38 @@ def parse_roc_ym(raw: str) -> tuple[str, int, int, str] | None:
     return digits, ad_year, month, month_key
 
 
+def parse_any_ym(raw: str) -> tuple[str, int, int, str] | None:
+    s = (raw or "").strip()
+    if not s:
+        return None
+
+    if "/" in s:
+        parts = s.split("/")
+        if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
+            y = int(parts[0])
+            m = int(parts[1])
+            if y >= 1900 and 1 <= m <= 12:
+                token = f"{y:04d}{m:02d}"
+                return token, y, m, f"{y:04d}-{m:02d}"
+
+    digits = "".join(ch for ch in s if ch.isdigit())
+    if not digits:
+        return None
+
+    if len(digits) == 6:
+        y = int(digits[:4])
+        m = int(digits[-2:])
+        if y >= 1900 and 1 <= m <= 12:
+            return digits, y, m, f"{y:04d}-{m:02d}"
+
+    if len(digits) == 4:
+        y = int(digits)
+        if y >= 1900:
+            return digits, y, 1, f"{y:04d}-01"
+
+    return parse_roc_ym(raw)
+
+
 def parse_value(raw: str) -> float | None:
     val = raw.strip().replace(",", "")
     if not val:
@@ -112,6 +144,50 @@ def read_facts(data_dir: Path) -> list[FactRow]:
                         source_file=str(csv_path),
                     )
                 )
+    return rows
+
+
+def read_openapi_facts(openapi_dir: Path) -> list[FactRow]:
+    rows: list[FactRow] = []
+    if not openapi_dir.exists():
+        return rows
+
+    for csv_path in sorted(openapi_dir.glob("*.csv")):
+        dataset = f"OPENAPI_{csv_path.stem}"
+        with csv_path.open("r", encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            if reader.fieldnames is None:
+                continue
+
+            metric_cols = [
+                c for c in reader.fieldnames if c not in {"年月", "公告日期", "TRANS_DATE"}
+            ]
+            for rec in reader:
+                ym_parsed = parse_any_ym(rec.get("年月", ""))
+                if ym_parsed is None:
+                    continue
+                token, ad_year, month, month_key = ym_parsed
+
+                for metric in metric_cols:
+                    value_raw = (rec.get(metric) or "").strip()
+                    if value_raw == "":
+                        continue
+                    rows.append(
+                        FactRow(
+                            dataset=dataset,
+                            roc_ym=token,
+                            ad_year=ad_year,
+                            month=month,
+                            month_key=month_key,
+                            institution="總計",
+                            institution_type="OpenAPI",
+                            item_zh=metric,
+                            item_en=metric,
+                            value_raw=value_raw,
+                            value_num=parse_value(value_raw),
+                            source_file=str(csv_path),
+                        )
+                    )
     return rows
 
 
@@ -394,8 +470,10 @@ def main() -> None:
     args = parse_args()
     base_path = Path(args.base_path).resolve()
     data_dir = base_path / "data"
+    openapi_dir = base_path / "rawdata" / "openapi"
 
     rows = read_facts(data_dir)
+    rows.extend(read_openapi_facts(openapi_dir))
     if not rows:
         raise SystemExit(f"No CSV rows found under {data_dir}")
 
