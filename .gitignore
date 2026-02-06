@@ -12,6 +12,7 @@ link.inf
 /database/twfs.sqlite
 /database/twfs.duckdb
 /database/crawl_manifest.json
+/database/issue_status_report.json
 
 # Generated static web data
 /www/data/catalog.json

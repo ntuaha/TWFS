@@ -18,6 +18,7 @@
 - `/pipelines/analyze_duckdb.py`：DuckDB 查詢工具
 - `/www/index.html`：靜態儀表板（逐月 / 逐機構）
 - `/www/DATA_DICTIONARY.md`：資料欄位定義
+- `/docs/ISSUE_RESOLUTION.md`：歷史 open issues 對應解法
 
 ## 本機執行
 

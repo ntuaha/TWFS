@@ -43,6 +43,11 @@ def parse_args() -> argparse.Namespace:
         "--web-data-dir", default="www/data", help="Static web data output directory"
     )
     parser.add_argument(
+        "--status-report-path",
+        default="database/issue_status_report.json",
+        help="Issue/coverage status report JSON output path",
+    )
+    parser.add_argument(
         "--skip-duckdb",
         action="store_true",
         help="Skip DuckDB build (useful for offline/local env without duckdb package)",
@@ -308,6 +313,83 @@ def export_web_json(sqlite_path: Path, web_data_dir: Path) -> None:
     conn.close()
 
 
+def month_range(start: str, end: str) -> list[str]:
+    sy, sm = map(int, start.split("-"))
+    ey, em = map(int, end.split("-"))
+    out = []
+    y, m = sy, sm
+    while (y, m) <= (ey, em):
+        out.append(f"{y:04d}-{m:02d}")
+        m += 1
+        if m > 12:
+            y += 1
+            m = 1
+    return out
+
+
+def export_issue_status(sqlite_path: Path, output_path: Path) -> None:
+    conn = sqlite3.connect(sqlite_path)
+    conn.row_factory = sqlite3.Row
+
+    row = conn.execute(
+        "SELECT MIN(month_key) AS min_month, MAX(month_key) AS max_month FROM facts"
+    ).fetchone()
+    min_month = row["min_month"]
+    max_month = row["max_month"]
+    expected = month_range(min_month, max_month)
+
+    datasets = [
+        r[0] for r in conn.execute("SELECT DISTINCT dataset FROM facts ORDER BY dataset").fetchall()
+    ]
+    coverage = []
+    for ds in datasets:
+        months = [
+            r[0]
+            for r in conn.execute(
+                "SELECT DISTINCT month_key FROM facts WHERE dataset = ? ORDER BY month_key", (ds,)
+            ).fetchall()
+        ]
+        month_set = set(months)
+        missing = [m for m in expected if m not in month_set]
+        r = conn.execute(
+            """
+            SELECT COUNT(*) AS row_count, MIN(month_key) AS min_month, MAX(month_key) AS max_month
+            FROM facts WHERE dataset = ?
+            """,
+            (ds,),
+        ).fetchone()
+        coverage.append(
+            {
+                "dataset": ds,
+                "row_count": r["row_count"],
+                "min_month": r["min_month"],
+                "max_month": r["max_month"],
+                "months_available": len(months),
+                "missing_months_count": len(missing),
+                "missing_months": missing,
+            }
+        )
+
+    y_bal_pre_cutoff = conn.execute(
+        """
+        SELECT COUNT(*) FROM facts
+        WHERE dataset = 'Y_BAL' AND month_key < '2008-08'
+        """
+    ).fetchone()[0]
+
+    report = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "month_window": {"min": min_month, "max": max_month},
+        "dataset_coverage": coverage,
+        "checks": {
+            "y_bal_pre_2008_08_row_count": y_bal_pre_cutoff,
+            "y_bal_pre_2008_08_has_data": y_bal_pre_cutoff > 0,
+        },
+    }
+    write_json(output_path, report)
+    conn.close()
+
+
 def main() -> None:
     args = parse_args()
     base_path = Path(args.base_path).resolve()
@@ -320,12 +402,14 @@ def main() -> None:
     sqlite_path = (base_path / args.sqlite_path).resolve()
     duckdb_path = (base_path / args.duckdb_path).resolve()
     web_data_dir = (base_path / args.web_data_dir).resolve()
+    status_report_path = (base_path / args.status_report_path).resolve()
 
     create_sqlite(sqlite_path, rows)
     duckdb_built = False
     if not args.skip_duckdb:
         duckdb_built = create_duckdb(duckdb_path, rows)
     export_web_json(sqlite_path, web_data_dir)
+    export_issue_status(sqlite_path, status_report_path)
 
     print(f"Built SQLite: {sqlite_path}")
     if args.skip_duckdb:
@@ -335,6 +419,7 @@ def main() -> None:
     else:
         print("DuckDB was not built in this environment.")
     print(f"Exported web JSON under: {web_data_dir}")
+    print(f"Exported issue status report: {status_report_path}")
     print(f"Total rows: {len(rows)}")
 
 
