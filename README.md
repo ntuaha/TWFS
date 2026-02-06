@@ -31,6 +31,12 @@ python pipelines/build_databases.py --base-path .
 python pipelines/analyze_duckdb.py --top-institutions --month 2011-01 --limit 10
 ```
 
+## Jupyter + DuckDB EDA
+
+- Notebook: `/Users/aha/Documents/TWFS/output/jupyter-notebook/twfs-duckdb-eda.ipynb`
+- 說明: `/Users/aha/Documents/TWFS/output/jupyter-notebook/README.md`
+- Notebook 依賴: `/Users/aha/Documents/TWFS/requirements-notebook.txt`
+
 輸出：
 
 - SQLite: `database/twfs.sqlite`
