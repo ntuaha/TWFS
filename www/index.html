@@ -1,70 +1,75 @@
 <!doctype html>
-<html>
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script> 
-	<script src="./3party/bootstrap/js/bootstrap.min.js"></script>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TWFS - Taiwan Financial Statistics</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <h1>台灣金融統計</h1>
+      <p>SQLite + DuckDB + Static Web Dashboard</p>
+      <div class="meta" id="meta"></div>
+    </header>
 
-	<link href="./3party/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
-	<script src="./ajax.js"></script> 
-	<script>
-	</script>
-</head>
-<body>
+    <main>
+      <section class="controls">
+        <label>
+          檢視模式
+          <select id="modeSelect">
+            <option value="month">逐月看</option>
+            <option value="institution">逐機構看</option>
+          </select>
+        </label>
 
-		<div class="navbar navbar-inverse">
-			<div class="navbar-inner">
-				<a class="brand" href="#">台灣金融統計</a>
-				<ul class="nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="./report.html">Report</a></li>
-					<li><a href="./trend.html">Trend</a></li>
-					<li><a href="./Ln.html">Ln</a></li>
-				</ul>
-			</div>
-		</div>
-		<div class="hero-unit">
-			<h1>台灣金融統計</h1>
-			<p>將台灣金融資料收集整理的地方</p>
-			<p>
-				<a class="btn btn-primary btn-large">
-					Learn more
-				</a>
-			</p>
-		</div>
-		<div class="row-fluid">
-			<div class="span3 offset1">
-				<H2>資料時間</H2>
-				<p>民國95年1月到民國102年9月</p>
-			</div>
-			<div class="span4">
-				<H2>資料庫格式</H2>
-				<a href="https://docs.google.com/spreadsheet/ccc?key=0AhEplIEPKoHfdHZxd1IzRVhUYnhPaVdxRnVoaExBTEE&usp=sharing" class="btn btn-primary ">
-					<i class="icon-book icon-white"></i> Metadata
-				</a>
-			</div>	
+        <label id="monthWrap">
+          月份
+          <select id="monthSelect"></select>
+        </label>
 
-			<div class="span3">
-				<H2>資料來源</H2>
-				<a href="https://survey.banking.gov.tw/statis/stmain.jsp?sys=100" class="btn btn-primary ">金管會 統計資料庫動態系統</a>
-			</div>
-		</div>
-		<div class="row-fluid">			
-				<div class="span3 offset1">
-					<H2>與我聯絡</H2>
-					<a href="ntuaha@gmail.com" class="btn btn-info">
-						<i class="icon-envelope icon-white"></i> Email
-					</a></br>
-				</div>
-				<div class="span4">
-				<H2>Github</H2>
-				<a href="https://github.com/ntuaha/TWFS" class="btn">
-					Github
-				</a>
-				</div>	
-		</div>
-		<hr>
-		<footer>有任何問題請與<a href="ntuaha@gmail.com">aha</a>聯絡</footer>
-</body>
+        <label id="institutionWrap" class="hidden">
+          機構
+          <select id="institutionSelect"></select>
+        </label>
+
+        <label>
+          資料集
+          <select id="datasetSelect">
+            <option value="ALL">全部</option>
+          </select>
+        </label>
+
+        <label>
+          關鍵字
+          <input id="keywordInput" type="text" placeholder="項目 / 英文欄位 / 機構" />
+        </label>
+      </section>
+
+      <section class="summary" id="summary"></section>
+
+      <section class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>月份</th>
+              <th>資料集</th>
+              <th>機構</th>
+              <th>銀行類別</th>
+              <th>項目</th>
+              <th>英文欄位</th>
+              <th>數值</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </section>
+
+      <section class="footer-note">
+        <a href="./DATA_DICTIONARY.md">Data Dictionary</a>
+      </section>
+    </main>
+
+    <script src="./app.js" defer></script>
+  </body>
 </html>
