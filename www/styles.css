@@ -1,0 +1,153 @@
+:root {
+  --bg: #f3f7f4;
+  --paper: #ffffff;
+  --ink: #18322a;
+  --muted: #4f6d63;
+  --accent: #0d8a6a;
+  --line: #d6e3dc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 10% -20%, #d9f2e7 0%, transparent 70%),
+    radial-gradient(900px 400px at 100% 0%, #e4eefb 0%, transparent 65%),
+    var(--bg);
+}
+
+.hero {
+  padding: 28px 20px 16px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.hero p {
+  margin: 6px 0;
+  color: var(--muted);
+}
+
+.meta {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+main {
+  padding: 0 20px 24px;
+}
+
+.controls,
+.summary,
+.table-wrap,
+.footer-note {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(15, 34, 28, 0.06);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.92rem;
+}
+
+select,
+input {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: var(--ink);
+}
+
+.summary {
+  margin-top: 14px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  background: linear-gradient(140deg, #f9fffc, #f4fbf8);
+}
+
+.card .k {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.card .v {
+  margin-top: 2px;
+  font-weight: 700;
+}
+
+.table-wrap {
+  margin-top: 14px;
+  overflow: auto;
+  max-height: 68vh;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--line);
+  padding: 8px 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: #edf6f2;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.footer-note {
+  margin-top: 12px;
+  padding: 12px;
+}
+
+a {
+  color: var(--accent);
+}
+
+.hidden {
+  display: none;
+}
+
+.error {
+  color: #a32626;
+  font-weight: 700;
+}
