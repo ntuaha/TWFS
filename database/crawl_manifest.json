@@ -1,132 +1,155 @@
 {
   "generated_at": "2026-02-06",
-  "lookback_months": 36,
+  "mode": "openapi",
+  "openapi_data_type": 1,
+  "lookback_months": 24,
   "sources": [
     {
-      "dataset": "DFEI",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B01",
+      "table_id": "B01",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B01&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B01.csv",
+      "latest_token": "202409",
+      "sha256": "274a22f8b4ca26555a8674b33ddaade9229811a851809c13759bdca80c315fe9"
     },
     {
-      "dataset": "MD_BAL",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B02",
+      "table_id": "B02",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B02&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B02.csv",
+      "latest_token": "202409",
+      "sha256": "79f244df6226d1e359ebd8bcc6e0cd880a1571fd531a0af529c88e8921d8892e"
     },
     {
-      "dataset": "MD_AUM",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B03",
+      "table_id": "B03",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B03&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B03.csv",
+      "latest_token": "202409",
+      "sha256": "3860826ed17936ebbc0810f208bf064b6225ee64a9fdcabc3fe67d512b03f92c"
     },
     {
-      "dataset": "FD_BAL",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B04",
+      "table_id": "B04",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B04&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B04.csv",
+      "latest_token": "202409",
+      "sha256": "031105a6cf7a3407c71ca10d70801d5bc3d0fb05a39a498468ee9c7e384c2084"
     },
     {
-      "dataset": "NC",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B05",
+      "table_id": "B05",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B05&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B05.csv",
+      "latest_token": "202409",
+      "sha256": "757436112c7ddbb6510f7055cc1c063b478927924b189518b11bf65fd83c2eae"
     },
     {
-      "dataset": "Y_BAL",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B06",
+      "table_id": "B06",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B06&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B06.csv",
+      "latest_token": "202409",
+      "sha256": "4bfdc91fcb5315ecf09293815a9cebfa15d8fc8c3a6ecc84fb2ff69ab01b65f1"
     },
     {
-      "dataset": "CD",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B07",
+      "table_id": "B07",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B07&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B07.csv",
+      "latest_token": "202409",
+      "sha256": "eb88019f9f28f59bf0311c9012c499814848d68cd94bb28ae8771ff60122cabe"
     },
     {
-      "dataset": "AREA_DP",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B08",
+      "table_id": "B08",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B08&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B08.csv",
+      "latest_token": "202409",
+      "sha256": "46250dadc4a2c3228f83002a4b74773176da5cea45e386ec33cbae6407aaf2f8"
     },
     {
-      "dataset": "CC",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B09",
+      "table_id": "B09",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B09&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B09.csv",
+      "latest_token": "202409",
+      "sha256": "1f99139e03d5c56b90e9a0fea493a478babc63d7ee6c0344f7cc983509d21882"
     },
     {
-      "dataset": "ATM",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B10",
+      "table_id": "B10",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B10&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B10.csv",
+      "latest_token": "202409",
+      "sha256": "cef80fb367180d92835d081329e7add519dc006b854c1983efc5354701c0c8f7"
     },
     {
-      "dataset": "OC",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B11",
+      "table_id": "B11",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B11&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B11.csv",
+      "latest_token": "202409",
+      "sha256": "822d948798890bc8bdf5fcfe83a20d6a42035ca0bf3a5b2fd4384735043ccb2d"
     },
     {
-      "dataset": "PFEI",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B12",
+      "table_id": "B12",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B12&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B12.csv",
+      "latest_token": "202406",
+      "sha256": "448700a7d66ef26695b7c18cf8ad2222990516a012a231c94f948fcff142dcff"
     },
     {
-      "dataset": "LPPE",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B13",
+      "table_id": "B13",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B13&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B13.csv",
+      "latest_token": "202211",
+      "sha256": "75aa39608a69dee84efdfe6613a76aea0d764d88c393e3348cad196cb9710808"
     },
     {
-      "dataset": "LSME",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
-    },
-    {
-      "dataset": "LN",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
-    },
-    {
-      "dataset": "LN_AUM",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
-    },
-    {
-      "dataset": "CL",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
-    },
-    {
-      "dataset": "CL_INFO",
-      "status": "missing",
-      "url": null,
-      "saved_to": null,
-      "roc_ym": null
+      "source": "openapi",
+      "dataset": "FSC_B14",
+      "table_id": "B14",
+      "status": "downloaded",
+      "url": "https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT?DATA_TYPE=1&TableID=B14&OUTPUT_FILE=Y",
+      "saved_to": "/Users/aha/Documents/TWFS/rawdata/openapi/B14.csv",
+      "latest_token": "980000",
+      "sha256": "45d7b3d965e95c4d01a2946177264932340b4549c0916523359645adad82ab57"
     }
-  ]
+  ],
+  "summary": {
+    "downloaded": 14,
+    "exists": 0,
+    "missing": 0,
+    "errors": 0,
+    "total": 14
+  }
 }

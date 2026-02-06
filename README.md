@@ -40,9 +40,12 @@ python pipelines/analyze_duckdb.py --top-institutions --month 2011-01 --limit 10
 ## 定期更新資料
 
 ```bash
-python pipelines/crawl_latest.py --base-path .
+python pipelines/crawl_latest.py --base-path . --source openapi
 python pipelines/build_databases.py --base-path .
 ```
+
+新資料來源（預設）：`https://stat.fsc.gov.tw/FSC_OAS3_RESTORE/api/CSV_EXPORT`  
+舊來源相容模式：`python pipelines/crawl_latest.py --base-path . --source legacy`
 
 ## GitHub Actions / gh-pages
 
